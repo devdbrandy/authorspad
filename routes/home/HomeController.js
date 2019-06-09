@@ -1,4 +1,5 @@
-const ResponseHandler = require('../../helpers/responseHandler');
+const ResponseHandler = require('../../support/responseHandler');
+const { env } = require('../../support/helpers');
 
 class HomeController {
   /**
@@ -10,7 +11,8 @@ class HomeController {
    * @memberof HomeController
    */
   static index(request, response) {
-    return ResponseHandler.send(response, 'Welcome to iRobot');
+    const appName = env('APP_NAME');
+    return ResponseHandler.send(response, `Welcome to ${appName}`);
   }
 }
 

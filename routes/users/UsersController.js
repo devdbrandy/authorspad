@@ -1,5 +1,5 @@
-const ResponseHandler = require('../../helpers/responseHandler');
-const ExceptionHandler = require('../../helpers/exceptionHandler');
+const ResponseHandler = require('../../support/responseHandler');
+const ExceptionHandler = require('../../support/exceptionHandler');
 const {
   MESSAGES: {
     RESOURCE_FOUND,
@@ -7,7 +7,7 @@ const {
     UPDATE_SUCCESS,
     DELETED_SUCCESS,
   },
-} = require('../../helpers/constants');
+} = require('../../support/constants');
 const users = require('../../utils/data');
 
 

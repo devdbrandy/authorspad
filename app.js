@@ -1,10 +1,10 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const ExceptionHandler = require('./helpers/exceptionHandler');
+const ExceptionHandler = require('./support/exceptionHandler');
 const routes = require('./routes');
 
-const { MESSAGES: { NOT_FOUND } } = require('./helpers/constants');
+const { MESSAGES: { NOT_FOUND } } = require('./support/constants');
 
 const app = express();
 
