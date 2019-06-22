@@ -1,10 +1,12 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const ExceptionHandler = require('./support/exceptionHandler');
-const routes = require('./routes');
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
 
-const { MESSAGES: { NOT_FOUND } } = require('./support/constants');
+import ExceptionHandler from '@helpers/exceptionHandler';
+import { MESSAGES } from '@helpers/constants';
+import routes from './routes';
+
+const { NOT_FOUND } = MESSAGES;
 
 const app = express();
 
@@ -24,4 +26,4 @@ app.use((request, response, next) => {
 // Exception handler
 app.use(ExceptionHandler.handleError());
 
-module.exports = app;
+export default app;

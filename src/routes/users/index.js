@@ -1,7 +1,7 @@
-const express = require('express');
-const UsersController = require('./UsersController');
+import { Router } from 'express';
+import UsersController from './UsersController';
 
-const router = express.Router();
+const router = Router();
 
 /* GET users listing */
 router.get('/users', UsersController.getAllUsers);
@@ -14,4 +14,4 @@ router.put('/users/:id', UsersController.updateUser);
 /* DELETE user */
 router.delete('/users/:id', UsersController.destroyUser);
 
-module.exports = router;
+export default router;

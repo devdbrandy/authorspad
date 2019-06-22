@@ -1,15 +1,14 @@
-const ResponseHandler = require('../../support/responseHandler');
-const ExceptionHandler = require('../../support/exceptionHandler');
-const {
-  MESSAGES: {
-    RESOURCE_FOUND,
-    CREATE_SUCCESS,
-    UPDATE_SUCCESS,
-    DELETED_SUCCESS,
-  },
-} = require('../../support/constants');
-const users = require('../../utils/data');
+import ResponseHandler from '@helpers/responseHandler';
+import ExceptionHandler from '@helpers/exceptionHandler';
+import { MESSAGES } from '@helpers/constants';
+import users from '../../utils/data';
 
+const {
+  RESOURCE_FOUND,
+  CREATE_SUCCESS,
+  UPDATE_SUCCESS,
+  DELETE_SUCCESS,
+} = MESSAGES;
 
 class UsersController {
   /**
@@ -34,9 +33,9 @@ class UsersController {
    */
   static getUser(request, response) {
     const { params: { id: userId } } = request;
-    const user = users.find(user => user.id === parseInt(userId, 10));
-    ExceptionHandler.throwErrorIfNull(user);
-    return ResponseHandler.send(response, RESOURCE_FOUND, user);
+    const userData = users.find(user => user.id === parseInt(userId, 10));
+    ExceptionHandler.throwErrorIfNull(userData);
+    return ResponseHandler.send(response, RESOURCE_FOUND, userData);
   }
 
   /**
@@ -96,8 +95,8 @@ class UsersController {
     if (userIndex !== 0) ExceptionHandler.throwErrorIfNull(userIndex);
 
     users.splice(userIndex, 1);
-    return ResponseHandler.send(response, DELETED_SUCCESS, {});
+    return ResponseHandler.send(response, DELETE_SUCCESS, {});
   }
 }
 
-module.exports = UsersController;
+export default UsersController;

@@ -1,13 +1,10 @@
-const createError = require('http-errors');
-const ResponseHandler = require('./responseHandler');
-const {
-  MESSAGES: {
-    RESOURCE_NOT_FOUND,
-    APP_SERVER_ERROR,
-  },
-} = require('./constants');
+import createError from 'http-errors';
+import ResponseHandler from './responseHandler';
+import { MESSAGES } from './constants';
 
-class ExceptionHandler {
+const { RESOURCE_NOT_FOUND, APP_SERVER_ERROR } = MESSAGES;
+
+export default class ExceptionHandler {
   /**
    * Validates that a given data is valid, else throws exception
    *
@@ -43,8 +40,8 @@ class ExceptionHandler {
    * @memberof ExceptionHandler
    */
   static handleError() {
-    return (error, request, response, next) => {
-      this.sendErrorResponse(error, response);
+    return (error, request, response) => {
+      ExceptionHandler.sendErrorResponse(error, response);
     };
   }
 
@@ -66,5 +63,3 @@ class ExceptionHandler {
     return ResponseHandler.send(response, message, {}, statusCode, errorCode);
   }
 }
-
-module.exports = ExceptionHandler;

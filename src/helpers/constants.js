@@ -1,4 +1,4 @@
-const API_VERSION = 'v1';
+export const API_VERSION = 'v1';
 
 /**
  * ----------------------------------
@@ -11,7 +11,7 @@ const API_VERSION = 'v1';
  * # 13XX : Session Errors
  */
 
-const MESSAGES = {
+export const MESSAGES = {
   APP_SERVER_ERROR: ['App Server Error, please contact the admin', 1000],
   NOT_FOUND: [`Not Found. Use /api/${API_VERSION} to access the api resource`, 1105],
 
@@ -20,10 +20,5 @@ const MESSAGES = {
 
   CREATE_SUCCESS: 'Created successfully',
   UPDATE_SUCCESS: 'Updated successfully',
-  DELETED_SUCCESS: 'Deleted successfully',
-};
-
-module.exports = {
-  API_VERSION,
-  MESSAGES,
+  DELETE_SUCCESS: 'Deleted successfully',
 };

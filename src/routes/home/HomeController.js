@@ -1,5 +1,5 @@
-const ResponseHandler = require('../../support/responseHandler');
-const { env } = require('../../support/helpers');
+import ResponseHandler from '@helpers/responseHandler';
+import { env } from '@helpers/utils';
 
 class HomeController {
   /**
@@ -16,4 +16,4 @@ class HomeController {
   }
 }
 
-module.exports = HomeController;
+export default HomeController;

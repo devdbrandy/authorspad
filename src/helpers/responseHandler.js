@@ -1,4 +1,4 @@
-class ResponseHandler {
+export default class ResponseHandler {
   /**
    * Handles http response
    *
@@ -12,17 +12,15 @@ class ResponseHandler {
    * @memberof ResponseHandler
    */
   static send(response, message, data = {}, code = 200, errorCode = null) {
-    message = Array.isArray(message) ? message[0] : message;
+    const msg = Array.isArray(message) ? message[0] : message;
     const failurePayload = errorCode ? { errorCode } : {};
 
     return response.status(code)
       .json({
         success: !errorCode,
-        message,
+        message: msg,
         data,
         ...failurePayload,
       });
   }
 }
-
-module.exports = ResponseHandler;

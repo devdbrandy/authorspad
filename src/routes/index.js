@@ -1,5 +1,5 @@
-const homeRouter = require('./home');
-const usersRouter = require('./users');
+import homeRouter from './home';
+import usersRouter from './users';
 
 /**
  * A wrapper for preloading the routes
@@ -14,4 +14,4 @@ const routes = (app) => {
   return app;
 };
 
-module.exports = routes;
+export default routes;

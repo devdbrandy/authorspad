@@ -1,14 +1,14 @@
-const path = require('path');
-const dotEnv = require('dotenv-extended');
-const { env } = require('../support/helpers');
+import { resolve } from 'path';
+import { load } from 'dotenv-extended';
+import { env } from '@helpers/utils';
 
-const dotEnvFile = env('NODE_ENV') === 'test' ? '.env.test' : '.env';
+const dotenvFile = env('NODE_ENV') === 'test' ? '.env.test' : '.env';
 
-dotEnv.load({
+load({
   silent: true,
-  path: path.resolve(__dirname, dotEnvFile),
-  defaults: path.resolve(__dirname, '.env.defaults'),
-  schema: path.resolve(__dirname, '.env.schema'),
+  path: resolve(__dirname, dotenvFile),
+  defaults: resolve(__dirname, '.env'),
+  schema: resolve(__dirname, '.env.schema'),
   errorOnMissing: true,
   errorOnExtra: true,
   errorOnRegex: false,

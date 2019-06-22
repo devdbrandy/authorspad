@@ -1,24 +1,23 @@
-#!/usr/bin/env node
-
 /**
  * Module dependencies.
  */
-const debug = require('debug')('irobot:api');
-const http = require('http');
-const { normalizePort } = require('../support/utils');
-const { logger, env } = require('../support/helpers');
-const app = require('../app');
+import Debug from 'debug';
+import { createServer } from 'http';
+import { env, logger, normalizePort } from '../helpers/utils';
+import app from '../app';
+
+const debug = Debug('irobot:api');
 
 /**
  * Get port from environment and store in Express.
  */
-let port = normalizePort(env('PORT') || '3000');
+let port = normalizePort(env('PORT', 3000));
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
-const server = http.createServer(app);
+const server = createServer(app);
 
 /**
  * Event listener for HTTP server "error" event.
@@ -26,7 +25,7 @@ const server = http.createServer(app);
  * @param {object} error - Error object
  * @returns {void}
  */
-function onError(error) {
+const onError = (error) => {
   if (error.syscall !== 'listen') throw error;
   const bind = (typeof port === 'string') ? `Pipe ${port}` : `Port ${port}`;
 
@@ -37,23 +36,23 @@ function onError(error) {
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      logger.error(`${bind} is already in use`);
       port += 1;
+      logger.error(`${bind} is already in use, trying ${port}`);
       server.listen(port);
       break;
     default:
       throw error;
   }
-}
+};
 
 /**
  * Event listener for HTTP server "listening" event.
  */
-function onListening() {
+const onListening = () => {
   const address = server.address();
   const bind = typeof address === 'string' ? `pipe ${address}` : `port ${address.port}`;
   debug(`We are live on ${bind}`);
-}
+};
 
 /**
  * Listen on provided port, on all network interfaces.
