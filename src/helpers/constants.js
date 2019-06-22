@@ -11,7 +11,7 @@ export const API_VERSION = 'v1';
  * # 13XX : Session Errors
  */
 
-export const MESSAGES = {
+export const messages = {
   APP_SERVER_ERROR: ['App Server Error, please contact the admin', 1000],
   NOT_FOUND: [`Not Found. Use /api/${API_VERSION} to access the api resource`, 1105],
 

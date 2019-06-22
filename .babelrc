@@ -1,5 +1,14 @@
 {
-  "presets": ["@babel/env"],
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "node": "current"
+        },
+      }
+    ]
+  ],
   "plugins": [
     [
       "@babel/transform-runtime",
@@ -17,7 +26,8 @@
       "alias": {
         "@helpers": "./src/helpers",
         "@middlewares": "./src/middlewares",
-        "@utils": "./src/utils"
+        "@utils": "./src/utils",
+        "@test": "./test"
       }
     }]
   ]

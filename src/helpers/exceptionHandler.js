@@ -1,8 +1,8 @@
 import createError from 'http-errors';
 import ResponseHandler from './responseHandler';
-import { MESSAGES } from './constants';
+import { messages } from './constants';
 
-const { RESOURCE_NOT_FOUND, APP_SERVER_ERROR } = MESSAGES;
+const { RESOURCE_NOT_FOUND, APP_SERVER_ERROR } = messages;
 
 export default class ExceptionHandler {
   /**

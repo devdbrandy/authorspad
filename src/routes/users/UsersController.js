@@ -1,6 +1,6 @@
 import ResponseHandler from '@helpers/responseHandler';
 import ExceptionHandler from '@helpers/exceptionHandler';
-import { MESSAGES } from '@helpers/constants';
+import { messages } from '@helpers/constants';
 import users from '../../utils/data';
 
 const {
@@ -8,7 +8,7 @@ const {
   CREATE_SUCCESS,
   UPDATE_SUCCESS,
   DELETE_SUCCESS,
-} = MESSAGES;
+} = messages;
 
 class UsersController {
   /**
