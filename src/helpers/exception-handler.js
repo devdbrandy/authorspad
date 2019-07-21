@@ -1,5 +1,5 @@
 import createError from 'http-errors';
-import ResponseHandler from './responseHandler';
+import ResponseHandler from './response-handler';
 import { messages } from './constants';
 
 const { RESOURCE_NOT_FOUND, APP_SERVER_ERROR } = messages;
@@ -24,12 +24,12 @@ export default class ExceptionHandler {
    *
    * @static
    * @param {number} code - The hhtp error code
-   * @param {Array.<string,number>} responseMessage - A list of error message & code to display
+   * @param {Array.<string,number>} msg - A list of error message & code to display
    * @memberof ExceptionHandler
    */
-  static throwHttpError(code, responseMessage) {
-    const [message, errorCode] = responseMessage;
-    throw createError(code, message, { errorCode });
+  static throwHttpError(code, msg, errors) {
+    const [message, errorCode] = msg;
+    throw createError(code, message, { errorCode, errors });
   }
 
   /**
@@ -40,8 +40,11 @@ export default class ExceptionHandler {
    * @memberof ExceptionHandler
    */
   static handleError() {
-    return (error, request, response) => {
-      ExceptionHandler.sendErrorResponse(error, response);
+    return (error, req, res, next) => {
+      if (res.headersSent) {
+        return next(error);
+      }
+      return ExceptionHandler.sendErrorResponse(error, res);
     };
   }
 
@@ -50,16 +53,17 @@ export default class ExceptionHandler {
    *
    * @static
    * @param {object} error - The Error object
-   * @param {object} response - Express Response object
+   * @param {object} res - Express Response object
    * @returns {object} A defined response object
    * @memberof ExceptionHandler
    */
-  static sendErrorResponse(error, response) {
+  static sendErrorResponse(error, res) {
     const {
       statusCode = 500,
       message,
       errorCode = APP_SERVER_ERROR[1],
+      errors,
     } = error;
-    return ResponseHandler.send(response, message, {}, statusCode, errorCode);
+    return ResponseHandler.send(res, message, errors, statusCode, errorCode);
   }
 }

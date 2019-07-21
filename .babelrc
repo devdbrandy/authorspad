@@ -26,7 +26,11 @@
       "alias": {
         "@helpers": "./src/helpers",
         "@middlewares": "./src/middlewares",
+        "@models": "./src/database/models",
+        "@database": "./src/database",
+        "@services": "./src/services",
         "@utils": "./src/utils",
+        "@config": "./src/config",
         "@test": "./test"
       }
     }]

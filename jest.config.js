@@ -12,4 +12,5 @@ module.exports = {
   watchPlugins: [
     ['jest-watch-master', { branch: 'develop' }],
   ],
+  resetMocks: true,
 };

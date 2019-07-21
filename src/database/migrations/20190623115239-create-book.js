@@ -1,0 +1,40 @@
+export const up = (queryInterface, Sequelize) => (
+  queryInterface.createTable('Books', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER,
+    },
+    title: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    authorId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'id',
+        as: 'author',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'SET NULL',
+    },
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.fn('now'),
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.fn('now'),
+    },
+    deletedAt: {
+      allowNull: true,
+      type: Sequelize.DATE,
+    },
+  })
+);
+
+export const down = queryInterface => queryInterface.dropTable('Books');

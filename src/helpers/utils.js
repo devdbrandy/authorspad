@@ -33,6 +33,24 @@ export const normalizePort = (value) => {
   return (port >= 0) ? port : false;
 };
 
+/**
+ * Delete all null (or undefined) properties from an object.
+ * Set 'recurse' to true if you also want to delete properties in nested objects.
+ *
+ * @param {object} data - The data object
+ * @param {boolean} recurse - Enable cleanup for nested objects
+ * @returns {object} The cleaned object
+ */
+export const cleanData = (data, recurse) => {
+  Object.keys(data).forEach((key) => {
+    if (key === null) delete data[key];
+    if (recurse && typeof data[key] === 'object') {
+      cleanData(data[key], recurse);
+    }
+  });
+  return data;
+};
+
 export default class Utils {
   static normalizePort(value) {
     return normalizePort(value);
