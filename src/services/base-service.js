@@ -6,22 +6,30 @@ export default class BaseService {
   /**
    * Get a list of resources
    *
+   * @param {object} options - Additional options
    * @returns {Array} List of users
    * @memberof BaseService
    */
-  async findAll() {
-    return this.model.findAll();
+  async getAll(options) {
+    const rows = await this.model.findAll();
+
+    const { plain } = { ...options };
+    return (plain === true) ? rows.map(row => row.get({ plain })) : rows;
   }
 
   /**
    * Get a specific resource by id
    *
    * @param {number} id - The resource unique identifier
+   * @param {object} options - Additional options
    * @returns {object} The resource (if found)
    * @memberof BaseService
    */
-  async findById(id) {
-    return this.model.findByPk(id);
+  async getById(id, options) {
+    const row = await this.model.findByPk(id);
+
+    const { plain } = { ...options };
+    return plain === true ? row.get({ plain }) : row;
   }
 
   /**
@@ -44,7 +52,14 @@ export default class BaseService {
    * @memberof BaseService
    */
   async update(id, data) {
-    return this.model.update(data, { where: { id } });
+    const [, row] = await this.model.update(data, {
+      where: { id },
+      returning: true,
+      plain: true,
+    });
+    const plainData = row.get({ plain: true });
+    delete plainData.deletedAt;
+    return plainData;
   }
 
   /**

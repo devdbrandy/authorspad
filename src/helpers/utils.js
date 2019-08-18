@@ -43,20 +43,10 @@ export const normalizePort = (value) => {
  */
 export const cleanData = (data, recurse) => {
   Object.keys(data).forEach((key) => {
-    if (key === null) delete data[key];
+    if (data[key] === null) delete data[key];
     if (recurse && typeof data[key] === 'object') {
       cleanData(data[key], recurse);
     }
   });
   return data;
 };
-
-export default class Utils {
-  static normalizePort(value) {
-    return normalizePort(value);
-  }
-
-  static env(key, defaultValue = null) {
-    return env(key, defaultValue);
-  }
-}

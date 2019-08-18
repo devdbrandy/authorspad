@@ -1,14 +1,18 @@
 {
-  "name": "irobot",
+  "name": "authorspad",
   "version": "0.1.0",
+  "description": "AuthorsPad is a community of like minded writers to encourage inspiration and innovation by leveraging the modern web",
   "private": true,
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && babel src -d dist",
     "lint": "eslint src",
     "sequelize": "sequelize",
+    "db:migrate": "sequelize db:migrate",
+    "db:rollmigrate": "sequelize db:migrate:undo:all",
+    "db:refresh": "yarn db:rollmigrate && yarn db:migrate",
     "start": "node ./dist/bin/www",
-    "start:dev": "DEBUG=irobot:* nodemon -r ./env/loadConfig.js --exec babel-node src/bin/www",
+    "start:dev": "DEBUG=authorspad:* nodemon -r ./env/loadConfig.js --exec babel-node src/bin/www",
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
@@ -57,7 +61,8 @@
     "lint-staged": "^8.2.1",
     "nodemon": "^1.19.1",
     "rimraf": "^2.6.3",
-    "sequelize-cli": "^5.5.0"
+    "sequelize-cli": "^5.5.0",
+    "supertest": "^4.0.2"
   },
   "engines": {
     "node": "12.4.0"

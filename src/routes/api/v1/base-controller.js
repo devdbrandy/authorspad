@@ -1,4 +1,6 @@
-import ResponseHandler from '@helpers/response-handler';
+import ResponseHandler from '@helpers/response';
+
+const asyncWrapper = fn => (req, res, next) => fn(req, res, next).catch(next);
 
 export default class BaseController {
   /**
@@ -10,5 +12,6 @@ export default class BaseController {
   constructor(service) {
     this.service = service;
     this.sendResponse = ResponseHandler.send;
+    this.asyncWrapper = asyncWrapper;
   }
 }

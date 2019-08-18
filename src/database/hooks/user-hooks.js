@@ -3,7 +3,7 @@ const UserHooks = {
     options.individualHooks = true;
   },
   afterDestroy: (user) => {
-    user.setBooks([]);
+    user.setArticles([]);
   },
 };
 

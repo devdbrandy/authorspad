@@ -6,7 +6,7 @@ import { createServer } from 'http';
 import { env, logger, normalizePort } from '../helpers/utils';
 import app from '../app';
 
-const debug = Debug('irobot:api');
+const debug = Debug('authorspad:api');
 
 /**
  * Get port from environment and store in Express.

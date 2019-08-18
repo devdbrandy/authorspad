@@ -1,14 +1,6 @@
-import ExceptionHandler from '@helpers/exception-handler';
-import { messages } from '@helpers/constants';
+import ExceptionHandler from '@helpers/exception';
 import UserService from '@services/user-service';
 import BaseController from '../base-controller';
-
-const {
-  RESOURCE_FOUND,
-  CREATE_SUCCESS,
-  UPDATE_SUCCESS,
-  DELETE_SUCCESS,
-} = messages;
 
 /**
  * This is the main class representing UsersController
@@ -26,14 +18,10 @@ class UsersController extends BaseController {
    * @memberof UsersController
    */
   getAllUsers() {
-    return async (req, res, next) => {
-      try {
-        const users = await this.service.findAll();
-        this.sendResponse(res, RESOURCE_FOUND, { users });
-      } catch (error) {
-        next(error);
-      }
-    };
+    return this.asyncWrapper(async (req, res) => {
+      const users = await this.service.getAll();
+      this.sendResponse(res, { users });
+    });
   }
 
   /**
@@ -45,16 +33,12 @@ class UsersController extends BaseController {
    * @memberof UsersController
    */
   getUser() {
-    return async (req, res, next) => {
-      try {
-        const { params: { id: userId } } = req;
-        const user = await this.service.findById(userId);
-        ExceptionHandler.throwErrorIfNull(user);
-        this.sendResponse(res, RESOURCE_FOUND, { user });
-      } catch (error) {
-        next(error);
-      }
-    };
+    return this.asyncWrapper(async (req, res) => {
+      const { params: { id: userId } } = req;
+      const user = await this.service.getById(userId);
+      ExceptionHandler.throwErrorIfNull(user);
+      this.sendResponse(res, { user });
+    });
   }
 
   /**
@@ -66,15 +50,11 @@ class UsersController extends BaseController {
    * @memberof UsersController
    */
   createUser() {
-    return async (req, res, next) => {
-      try {
-        const { body } = req;
-        const user = await this.service.create(body);
-        this.sendResponse(res, CREATE_SUCCESS, { user }, 201);
-      } catch (error) {
-        next(error);
-      }
-    };
+    return this.asyncWrapper(async (req, res) => {
+      const { body } = req;
+      const user = await this.service.create(body);
+      this.sendResponse(res, { user }, undefined, 201);
+    });
   }
 
   /**
@@ -86,18 +66,14 @@ class UsersController extends BaseController {
    * @memberof UsersController
    */
   updateUser() {
-    return async (req, res, next) => {
-      try {
-        const {
-          body,
-          params: { id: userId },
-        } = req;
-        await this.service.update(userId, body);
-        this.sendResponse(res, UPDATE_SUCCESS);
-      } catch (error) {
-        next(error);
-      }
-    };
+    return this.asyncWrapper(async (req, res) => {
+      const {
+        body,
+        params: { id: userId },
+      } = req;
+      const user = await this.service.update(userId, body);
+      this.sendResponse(res, { user });
+    });
   }
 
   /**
@@ -109,15 +85,11 @@ class UsersController extends BaseController {
    * @memberof UsersController
    */
   destroyUser() {
-    return async (req, res, next) => {
-      try {
-        const { params: { id: userId } } = req;
-        await this.service.delete(userId);
-        this.sendResponse(res, DELETE_SUCCESS, null, 200);
-      } catch (error) {
-        next(error);
-      }
-    };
+    return this.asyncWrapper(async (req, res) => {
+      const { params: { id: userId } } = req;
+      await this.service.delete(userId);
+      this.sendResponse(res, null, null, 204);
+    });
   }
 }
 

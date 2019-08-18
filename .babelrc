@@ -24,14 +24,16 @@
       "module-resolver", {
       "root": ["./src"],
       "alias": {
+        "@config": "./src/config",
+        "@database": "./src/database",
+        "@factories": "./src/database/factories",
         "@helpers": "./src/helpers",
         "@middlewares": "./src/middlewares",
         "@models": "./src/database/models",
-        "@database": "./src/database",
         "@services": "./src/services",
-        "@utils": "./src/utils",
-        "@config": "./src/config",
-        "@test": "./test"
+        "@src": "./src",
+        "@test": "./test",
+        "@utils": "./src/utils"
       }
     }]
   ]

@@ -11,13 +11,11 @@ export const API_VERSION = 'v1';
  * # 13XX : Session Errors
  */
 export const messages = {
-  APP_SERVER_ERROR: ['App Server Error, please contact the admin', 1000],
-  NOT_FOUND: [`Not Found. Use /api/${API_VERSION} to access the api resource`, 1105],
+  APP_SERVER_ERROR: 'App Server Error, please contact the admin',
+  NOT_FOUND: `Not Found. Use /api/${API_VERSION} to access the api resource`,
 
-  RESOURCE_FOUND: ['Resource(s) found'],
-  RESOURCE_NOT_FOUND: ['No resource(s) found', 1106],
+  RESOURCE_FOUND: 'Resource(s) found',
+  RESOURCE_NOT_FOUND: 'No resource(s) found',
 
-  CREATE_SUCCESS: 'Resource successfully created',
-  UPDATE_SUCCESS: 'Resource successfully updated',
-  DELETE_SUCCESS: 'Resource successfully deleted',
+  WELCOME_MESSAGE: 'Welcome to AuthorsPad',
 };

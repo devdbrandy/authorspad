@@ -1,15 +1,18 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import createError from 'http-errors';
 
-import ExceptionHandler from '@helpers/exception-handler';
+import Exception from '@helpers/exception';
 import { messages } from '@helpers/constants';
 import routes from './routes';
 
 const { NOT_FOUND } = messages;
 const app = express();
 
-app.use(logger('dev'));
+const isTestEnvironment = app.get('env') === 'test';
+
+app.use(logger('dev', { skip: () => isTestEnvironment }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -19,10 +22,11 @@ routes(app);
 
 // catch 404 and forward to exception handler
 app.use((req, res, next) => {
-  next(ExceptionHandler.throwHttpError(404, NOT_FOUND));
+  next(createError(404, NOT_FOUND));
 });
 
-// exception handler
-app.use(ExceptionHandler.handleError());
+// exception handlers
+app.use(Exception.handleDatabaseError());
+app.use(Exception.handleError());
 
 export default app;

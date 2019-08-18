@@ -1,5 +1,5 @@
 export const up = (queryInterface, Sequelize) => (
-  queryInterface.createTable('Books', {
+  queryInterface.createTable('Articles', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -7,6 +7,10 @@ export const up = (queryInterface, Sequelize) => (
       type: Sequelize.INTEGER,
     },
     title: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    body: {
       allowNull: false,
       type: Sequelize.STRING,
     },
@@ -37,4 +41,4 @@ export const up = (queryInterface, Sequelize) => (
   })
 );
 
-export const down = queryInterface => queryInterface.dropTable('Books');
+export const down = queryInterface => queryInterface.dropTable('Articles');

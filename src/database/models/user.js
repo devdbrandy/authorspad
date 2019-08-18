@@ -2,10 +2,17 @@ import UserHooks from '../hooks/user-hooks';
 
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     email: {
       type: DataTypes.STRING,
+      allowNull: false,
       unique: {
         name: 'users_email',
         msg: 'A user with this email already exists.',
@@ -16,15 +23,15 @@ export default (sequelize, DataTypes) => {
     hooks: UserHooks,
     defaultScope: {
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'deletedAt'],
+        exclude: ['deletedAt'],
       },
     },
   });
 
   User.associate = (models) => {
-    User.hasMany(models.Book, {
+    User.hasMany(models.Article, {
       foreignKey: 'authorId',
-      as: 'books',
+      as: 'articles',
       onDelete: 'cascade',
       hooks: true,
     });

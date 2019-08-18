@@ -1,19 +1,14 @@
-import homeRouter from './home';
-import usersRouter from './users';
-import booksRouter from './books';
+import apiV1 from './api/v1';
+
 
 /**
- * A wrapper for preloading the routes
+ * A wrapper for registering all routes
  *
  * @param {object} app - The express main app
  * @returns {void}
  */
 const routes = (app) => {
-  app.use(homeRouter);
-  app.use(usersRouter);
-  app.use(booksRouter);
-
-  return app;
+  apiV1('/api/v1', app);
 };
 
 export default routes;
