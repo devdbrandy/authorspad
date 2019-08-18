@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12.8.0-stretch
+      - image: circleci/postgres:9.6.5-alpine-ram
+
+    working_directory: ~/authorspad
+
+    steps:
+      - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get install postgresql-client-9.6
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: Install dependencies
+          command: npm i
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          name: Run test and coverage
+          command: |
+            ./cc-test-reporter before-build
+            npm t
+            ./cc-test-reporter after-build --exit-code $?
