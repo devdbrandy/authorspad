@@ -12,6 +12,3 @@ Authored and maintained by Harry Dbrandy.
 
 > GitHub [@devdbrandy](https://github.com/devdbrandy)
 > Twitter [@devdbrandy](https://twitter.com/devdbrandy)
-
-[MIT]: http://mit-license.org/
-[contributors]: http://github.com/rstacruz/nprogress/contributors
