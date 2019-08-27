@@ -5,6 +5,10 @@
     "es6": true,
     "jest": true
   },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
   "settings": {
     "import/resolver": {
       "babel-module": {}
