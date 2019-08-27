@@ -4,7 +4,7 @@ import {
   cleanData,
 } from '../utils';
 
-describe('Utils > env', () => {
+describe('Utils > env()', () => {
   it('should return a specific env config var', () => {
     expect(env('NODE_ENV')).toBe('test');
   });
@@ -25,7 +25,7 @@ describe('Utils > env', () => {
   });
 });
 
-describe('Utils > normalizePort', () => {
+describe('Utils > normalizePort()', () => {
   it('should parse a given port to integer', () => {
     expect(normalizePort('8080')).toBe(8080);
   });
@@ -37,7 +37,7 @@ describe('Utils > normalizePort', () => {
   });
 });
 
-describe('Utils > cleanData', () => {
+describe('Utils > cleanData()', () => {
   it('should remove keys with null value', () => {
     const mockData = {
       type: 'cleanup',

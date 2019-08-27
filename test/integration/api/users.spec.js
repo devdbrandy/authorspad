@@ -2,6 +2,7 @@ import request from 'supertest';
 import app from '@src/app';
 import UserFactory, { userFactory } from '@factories/user';
 import models from '@database/models';
+import JWTService from '@services/jwt-service';
 
 const server = () => request(app);
 const apiBase = '/api/v1';
@@ -54,6 +55,7 @@ describe('GET /users/:id', () => {
 describe('POST /users', () => {
   it('should create a new user resource', (done) => {
     const userData = userFactory();
+    jest.spyOn(JWTService, 'sign').mockReturnValue('token');
 
     server()
       .post(`${apiBase}/users`)
@@ -64,6 +66,7 @@ describe('POST /users', () => {
 
         expect(err).toBeNull();
         expect(res.body).toHaveProperty('success', true);
+        expect(res.header).toHaveProperty('x-auth-token', 'token');
         expect(data).toHaveProperty('user');
         expect(data.user).toHaveProperty('firstName', userData.firstName);
         expect(data.user).toHaveProperty('lastName', userData.lastName);

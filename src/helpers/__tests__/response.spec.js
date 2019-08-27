@@ -8,7 +8,7 @@ const res = {
   json: jest.fn(),
 };
 
-describe('ResponsHandler > send', () => {
+describe('ResponsHandler > send()', () => {
   it('should successfully send a response object', () => {
     const expected = {
       success: true,
@@ -21,7 +21,7 @@ describe('ResponsHandler > send', () => {
   });
 });
 
-describe('ResponsHandler > sendError', () => {
+describe('ResponsHandler > sendError()', () => {
   it('should handle response with list of errors', () => {
     const error = new Error(APP_SERVER_ERROR);
     error.errors = [];

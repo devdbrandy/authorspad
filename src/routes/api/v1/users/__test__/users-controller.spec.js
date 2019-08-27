@@ -1,4 +1,5 @@
 import { userFactory } from '@factories/user';
+import JWTService from '@services/jwt-service';
 import controller from '../users-controller';
 
 const userMock = {
@@ -6,6 +7,8 @@ const userMock = {
   firstName: 'John',
   lastName: 'Doe',
   email: 'johndoe@gmail.com',
+  username: 'user124',
+  password: 'secret',
 };
 
 const res = {
@@ -26,6 +29,7 @@ describe('UsersController', () => {
 
     await getAllUsers({}, res, next);
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith(expected);
   });
   it('it should catch errors', async () => {
@@ -34,6 +38,7 @@ describe('UsersController', () => {
 
     await getAllUsers({}, res, next);
     expect(next).toHaveBeenCalled();
+    expect(next).toHaveBeenCalledTimes(1);
   });
   it('getUser() should return a specific user', async () => {
     jest.spyOn(controller.service, 'getById').mockResolvedValue(userMock);
@@ -46,15 +51,20 @@ describe('UsersController', () => {
 
     await getUser(req, res, next);
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith(expected);
   });
   it('createUser() should return newly created user', async () => {
+    jest.spyOn(JWTService, 'sign').mockReturnValue('token');
     jest.spyOn(controller.service, 'create').mockResolvedValue(userMock);
+
     const req = {
       body: {
         firstName: 'John',
         lastName: 'Doe',
         email: 'johndoe@gmail.com',
+        username: 'user124',
+        password: 'secret',
       },
     };
     const createUser = controller.createUser();
@@ -65,7 +75,9 @@ describe('UsersController', () => {
 
     await createUser(req, res, next);
     expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith(expected);
+    expect(res.header).toHaveBeenCalledWith('X-Auth-Token', 'token');
   });
   it('updateUser() should return updated user', async () => {
     const updatedUserMock = userFactory({ firstName: 'Mike' });
@@ -82,6 +94,7 @@ describe('UsersController', () => {
 
     await updateUser(req, res, next);
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith(expected);
   });
   it('destroyUser() should respond with 204 no response', async () => {
@@ -91,5 +104,6 @@ describe('UsersController', () => {
 
     await destroyUser(req, res, next);
     expect(res.status).toHaveBeenCalledWith(204);
+    expect(res.status).toHaveBeenCalledTimes(1);
   });
 });
