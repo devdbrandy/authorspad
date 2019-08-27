@@ -27,6 +27,7 @@ app.use((req, res, next) => {
 
 // exception handlers
 app.use(Exception.handleDatabaseError());
+app.use(Exception.handleDatabaseUniqueError());
 app.use(Exception.handleError());
 
 export default app;

@@ -1,5 +1,5 @@
 import createError from 'http-errors';
-import { DatabaseError } from 'sequelize';
+import { DatabaseError, UniqueConstraintError } from 'sequelize';
 import Response from '@helpers/response';
 import { messages } from './constants';
 
@@ -48,6 +48,24 @@ export default class Exception {
     return (error, req, res, next) => {
       if (error instanceof DatabaseError) {
         error.statusCode = 503;
+        return Response.sendError(res, error);
+      }
+      return next(error);
+    };
+  }
+
+  /**
+   * A middleware for handling database unique constraint errors
+   *
+   * @static
+   * @returns {object} HTTP response or moves to the next middleware
+   * @memberof Exception
+   */
+  static handleDatabaseUniqueError() {
+    return (error, req, res, next) => {
+      if (error instanceof UniqueConstraintError) {
+        error.statusCode = 400;
+        delete error.errors;
         return Response.sendError(res, error);
       }
       return next(error);
