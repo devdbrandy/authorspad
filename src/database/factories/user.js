@@ -18,6 +18,8 @@ export const userFactory = (props = {}) => {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
+    username: faker.internet.userName(),
+    password: 'secret',
   };
   return Object.assign({}, defaultProps, props);
 };

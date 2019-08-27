@@ -1,10 +1,7 @@
-const UserHooks = {
-  beforeBulkDestroy: (options) => {
-    options.individualHooks = true;
-  },
-  afterDestroy: (user) => {
-    user.setArticles([]);
-  },
+export const beforeBulkDestroy = (options) => {
+  options.individualHooks = true;
 };
 
-export default UserHooks;
+export const afterDestroy = (user) => {
+  user.setArticles([]);
+};

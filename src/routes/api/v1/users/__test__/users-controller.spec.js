@@ -11,6 +11,7 @@ const userMock = {
 const res = {
   status: jest.fn().mockReturnThis(),
   json: jest.fn(),
+  header: jest.fn(),
 };
 const next = jest.fn();
 

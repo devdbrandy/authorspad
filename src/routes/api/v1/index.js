@@ -1,4 +1,5 @@
 import homeRouter from './home';
+import authRouter from './auth';
 import usersRouter from './users';
 import articlesRouter from './articles';
 
@@ -11,6 +12,7 @@ import articlesRouter from './articles';
  */
 const routes = (apiPrefix, app) => {
   app.use(homeRouter);
+  app.use(apiPrefix, authRouter);
   app.use(apiPrefix, usersRouter);
   app.use(apiPrefix, articlesRouter);
 

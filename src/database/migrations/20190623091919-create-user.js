@@ -2,9 +2,8 @@ export const up = (queryInterface, Sequelize) => (
   queryInterface.createTable('Users', {
     id: {
       allowNull: false,
-      autoIncrement: true,
+      type: Sequelize.STRING,
       primaryKey: true,
-      type: Sequelize.INTEGER,
     },
     firstName: {
       allowNull: false,
@@ -14,10 +13,20 @@ export const up = (queryInterface, Sequelize) => (
       allowNull: false,
       type: Sequelize.STRING,
     },
+    password: Sequelize.STRING,
+    username: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true,
+    },
     email: {
       allowNull: false,
       type: Sequelize.STRING,
       unique: true,
+    },
+    isVerified: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
     },
     createdAt: {
       allowNull: false,

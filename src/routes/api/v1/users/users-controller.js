@@ -1,5 +1,6 @@
 import ExceptionHandler from '@helpers/exception';
 import UserService from '@services/user-service';
+import JWTService from '@services/jwt-service';
 import BaseController from '../base-controller';
 
 /**
@@ -52,7 +53,11 @@ class UsersController extends BaseController {
   createUser() {
     return this.asyncWrapper(async (req, res) => {
       const { body } = req;
-      const user = await this.service.create(body);
+      const user = await this.service.create(body, { plain: true });
+      const { id, username } = user;
+      const token = JWTService.sign({ id, username });
+
+      res.header('X-Auth-Token', token);
       this.sendResponse(res, { user }, undefined, 201);
     });
   }
