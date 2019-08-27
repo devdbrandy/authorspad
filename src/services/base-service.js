@@ -6,14 +6,14 @@ export default class BaseService {
   /**
    * Get a list of resources
    *
-   * @param {object} options - Additional options
+   * @param {object} options - Query options
    * @returns {Array} List of users
    * @memberof BaseService
    */
-  async getAll(options) {
+  async getAll(options = {}) {
     const rows = await this.model.findAll();
 
-    const { plain } = { ...options };
+    const { plain } = options;
     return (plain === true) ? rows.map(row => row.get({ plain })) : rows;
   }
 
@@ -21,14 +21,14 @@ export default class BaseService {
    * Get a specific resource by id
    *
    * @param {number} id - The resource unique identifier
-   * @param {object} options - Additional options
+   * @param {object} options - Query options
    * @returns {object} The resource (if found)
    * @memberof BaseService
    */
-  async getById(id, options) {
+  async getById(id, options = {}) {
     const row = await this.model.findByPk(id);
 
-    const { plain } = { ...options };
+    const { plain } = options;
     return plain === true ? row.get({ plain }) : row;
   }
 
@@ -36,11 +36,13 @@ export default class BaseService {
    * Create a new resource
    *
    * @param {object} data - The resource data
+   * @param {object} options - Query options
    * @returns {object} The newly created resource
    * @memberof BaseService
    */
-  async create(data) {
-    return this.model.create(data);
+  async create(data, options = {}) {
+    const row = await this.model.create(data);
+    return options.plain === true ? row.toJSON() : row;
   }
 
   /**
