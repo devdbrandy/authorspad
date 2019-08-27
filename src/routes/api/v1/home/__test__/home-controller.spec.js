@@ -13,6 +13,7 @@ describe('HomeController', () => {
 
     index({}, res);
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
       message: WELCOME_MESSAGE,

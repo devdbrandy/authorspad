@@ -1,5 +1,5 @@
 require('@babel/register');
-require('./env/loadConfig');
+require('./env/load-config');
 
 const path = require('path');
 

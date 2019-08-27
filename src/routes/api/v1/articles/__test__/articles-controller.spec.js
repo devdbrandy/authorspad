@@ -24,6 +24,7 @@ describe('ArticlesController', () => {
 
     await getAllArticles({}, res, next);
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith(expected);
   });
   it('it should catch errors', async () => {
@@ -32,6 +33,7 @@ describe('ArticlesController', () => {
 
     await getAllArticles({}, res, next);
     expect(next).toHaveBeenCalled();
+    expect(next).toHaveBeenCalledTimes(1);
   });
   it('getArticle() should return a specific article', async () => {
     jest.spyOn(controller.service, 'getById').mockResolvedValue(articleMock);
@@ -44,6 +46,7 @@ describe('ArticlesController', () => {
 
     await getArticle(req, res, next);
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith(expected);
   });
   it('createArticle() should return newly created article', async () => {
@@ -62,6 +65,7 @@ describe('ArticlesController', () => {
 
     await createArticle(req, res, next);
     expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith(expected);
   });
   it('updateArticle() should return updated article', async () => {
@@ -79,6 +83,7 @@ describe('ArticlesController', () => {
 
     await updateArticle(req, res, next);
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith(expected);
   });
   it('destroyArticle() should respond with 204 no response', async () => {
@@ -88,5 +93,6 @@ describe('ArticlesController', () => {
 
     await destroyArticle(req, res, next);
     expect(res.status).toHaveBeenCalledWith(204);
+    expect(res.status).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,5 +1,5 @@
 require('@babel/register');
-require('./env/loadConfig');
+require('./env/load-config');
 
 module.exports = {
   collectCoverageFrom: [
@@ -14,6 +14,7 @@ module.exports = {
   ],
   globalSetup: '<rootDir>/test/setup.js',
   globalTeardown: '<rootDir>/test/teardown.js',
+  clearMocks: true,
   restoreMocks: true,
   testEnvironment: 'node',
   testMatch: [
