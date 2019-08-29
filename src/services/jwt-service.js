@@ -18,7 +18,7 @@ export default class JWTService {
    * @memberof JWTService
    */
   static sign(payload, opts = {}) {
-    const privateKey = Buffer.from(env('APP_PKEY', 'secret'), 'base64').toString('ascii');
+    const privateKey = Buffer.from(env('APP_PKEY'), 'base64').toString('ascii');
     const options = {
       issuer: env('APP_NAME', ''),
       audience: env('APP_URL', ''),
@@ -40,7 +40,7 @@ export default class JWTService {
    * @memberof JWTService
    */
   static verify(token, opts) {
-    const publicKEY = Buffer.from(env('APP_PUB_KEY', 'secret'), 'base64').toString('ascii');
+    const publicKEY = Buffer.from(env('APP_PUB_KEY'), 'base64').toString('ascii');
     const options = {
       issuer: env('APP_NAME', ''),
       audience: env('APP_URL', ''),
