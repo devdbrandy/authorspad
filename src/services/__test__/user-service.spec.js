@@ -3,10 +3,11 @@ import models from '@database/models';
 import UserService from '../user-service';
 import BaseService from '../base-service';
 
-let user;
+const { Model } = models.Sequelize;
+let mockUser;
 
 beforeAll(async () => {
-  user = await UserFactory();
+  mockUser = await UserFactory();
 });
 
 afterAll(() => {
@@ -26,20 +27,20 @@ describe('UserService > getAll()', () => {
   });
   it('should return the list of user instances', async () => {
     const [result] = await UserService.getAll();
-    expect(result).toHaveProperty('dataValues');
+    expect(result).toBeInstanceOf(Model);
   });
 });
 
 describe('UserService > getById()', () => {
   it('should return a single user object by id', async () => {
-    const { id } = user;
+    const { id } = mockUser;
     const result = await UserService.getById(id, { plain: true });
-    expect(result).toEqual(user);
+    expect(result).toEqual(mockUser);
   });
   it('should return a single user instance by id', async () => {
-    const { id } = user;
+    const { id } = mockUser;
     const result = await UserService.getById(id);
-    expect(result).toHaveProperty('dataValues');
+    expect(result).toBeInstanceOf(Model);
   });
 });
 
@@ -55,7 +56,7 @@ describe('UserService > create()', () => {
 
 describe('UserService > update()', () => {
   it('should return updated user', async () => {
-    const { id } = user;
+    const { id } = mockUser;
     const result = await UserService.update(id, { firstName: 'John' });
     expect(result.firstName).toEqual('John');
   });
@@ -63,8 +64,30 @@ describe('UserService > update()', () => {
 
 describe('UserService > delete()', () => {
   it('delete() should return true if user is deleted', async () => {
-    const { id } = user;
+    const { id } = mockUser;
     const result = await UserService.delete(id);
     expect(result).toBeTruthy();
+  });
+});
+
+describe('UserService > getByEmailOrUsername', () => {
+  beforeAll(async () => {
+    mockUser = await UserFactory();
+  });
+
+  it('should return a single user object by username', async () => {
+    const { username } = mockUser;
+    const result = await UserService.getByEmailOrUsername(username, { plain: true });
+    expect(result).toEqual(mockUser);
+  });
+  it('should return a single user object by email', async () => {
+    const { email } = mockUser;
+    const result = await UserService.getByEmailOrUsername(email, { plain: true });
+    expect(result).toEqual(mockUser);
+  });
+  it('should return a single model instance by email or username', async () => {
+    const { email } = mockUser;
+    const result = await UserService.getByEmailOrUsername(email);
+    expect(result).toBeInstanceOf(Model);
   });
 });

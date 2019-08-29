@@ -18,4 +18,9 @@ export const messages = {
   RESOURCE_NOT_FOUND: 'No resource(s) found',
 
   WELCOME_MESSAGE: 'Welcome to AuthorsPad',
+
+  NO_AUTH_TOKEN: 'Access denied. No token provided.',
+  INVALID_AUTH_TOKEN: 'Authentication failure: Invalid or expired token.',
+  INVALID_TOKEN_FORMAT: 'Authorization token must be in the format: Bearer <token>.',
+  INVALID_CREDENTIALS: 'Your username or password is incorrect.',
 };

@@ -1,6 +1,7 @@
 import createError from 'http-errors';
 import UserService from '@services/user-service';
 import JWTService from '@services/jwt-service';
+import { messages } from '@helpers/constants';
 import BaseController from '../base-controller';
 
 /**
@@ -24,8 +25,9 @@ class AuthController extends BaseController {
       const user = await this.service.getByEmailOrUsername(username);
       const valid = user.comparePassword(password);
 
+      const { INVALID_CREDENTIALS } = messages;
       if (!valid) {
-        throw createError(401, 'Your username or password is incorrect.');
+        throw createError(401, INVALID_CREDENTIALS);
       }
 
       const id = user.get('id');

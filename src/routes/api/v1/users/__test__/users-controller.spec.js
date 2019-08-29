@@ -19,7 +19,7 @@ const res = {
 const next = jest.fn();
 
 describe('UsersController', () => {
-  it('getAllUsers() should return a list of users', async () => {
+  it('getAllUsers should return a list of users', async () => {
     jest.spyOn(controller.service, 'getAll').mockResolvedValue([userMock]);
     const getAllUsers = controller.getAllUsers();
     const expected = {
@@ -40,7 +40,7 @@ describe('UsersController', () => {
     expect(next).toHaveBeenCalled();
     expect(next).toHaveBeenCalledTimes(1);
   });
-  it('getUser() should return a specific user', async () => {
+  it('getUser should return a specific user', async () => {
     jest.spyOn(controller.service, 'getById').mockResolvedValue(userMock);
     const req = { params: { id: 1 } };
     const getUser = controller.getUser();
@@ -54,7 +54,7 @@ describe('UsersController', () => {
     expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith(expected);
   });
-  it('createUser() should return newly created user', async () => {
+  it('createUser should return newly created user', async () => {
     jest.spyOn(JWTService, 'sign').mockReturnValue('token');
     jest.spyOn(controller.service, 'create').mockResolvedValue(userMock);
 
@@ -79,7 +79,7 @@ describe('UsersController', () => {
     expect(res.json).toHaveBeenCalledWith(expected);
     expect(res.header).toHaveBeenCalledWith('X-Auth-Token', 'token');
   });
-  it('updateUser() should return updated user', async () => {
+  it('updateUser should return updated user', async () => {
     const updatedUserMock = userFactory({ firstName: 'Mike' });
     jest.spyOn(controller.service, 'update').mockResolvedValue(updatedUserMock);
     const req = {
@@ -97,7 +97,7 @@ describe('UsersController', () => {
     expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith(expected);
   });
-  it('destroyUser() should respond with 204 no response', async () => {
+  it('destroyUser should respond with 204 no response', async () => {
     jest.spyOn(controller.service, 'delete').mockResolvedValue(1);
     const req = { params: { id: 1 } };
     const destroyUser = controller.destroyUser();

@@ -7,7 +7,7 @@ const res = {
 };
 
 describe('HomeController', () => {
-  it('index() should load the API home page', async () => {
+  it('index should load the API home page', async () => {
     const { WELCOME_MESSAGE } = messages;
     const index = controller.index();
 

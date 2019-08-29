@@ -1,4 +1,4 @@
-import { DatabaseError } from 'sequelize';
+import { DatabaseError, UniqueConstraintError } from 'sequelize';
 import ExceptionHandler from '@helpers/exception';
 import { messages } from '@helpers/constants';
 
@@ -71,6 +71,27 @@ describe('ExceptionHandler > handleDatabaseError()', () => {
   it('should call next if not DatabaseError', () => {
     const error = new Error();
     handleDatabaseError(error, {}, res, next);
+    expect(next).toHaveBeenCalledWith(error);
+  });
+});
+
+describe('ExceptionHandler > handleDatabaseUniqueError()', () => {
+  const handleDatabaseUniqueError = ExceptionHandler.handleDatabaseUniqueError();
+
+  it('should handle DatabaseUniqueError exception', () => {
+    const error = new UniqueConstraintError(new Error('unique error'));
+    const expected = {
+      success: false,
+      message: 'unique error',
+      errors: undefined,
+    };
+    handleDatabaseUniqueError(error, {}, res, next);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith(expected);
+  });
+  it('should call next if not DatabaseUniqueError', () => {
+    const error = new Error();
+    handleDatabaseUniqueError(error, {}, res, next);
     expect(next).toHaveBeenCalledWith(error);
   });
 });
