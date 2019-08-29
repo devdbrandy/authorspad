@@ -4,6 +4,7 @@ import models from '@database/models';
 import ArticleService from '../article-service';
 import BaseService from '../base-service';
 
+const { Model } = models.Sequelize;
 let article;
 
 beforeAll(async () => {
@@ -28,7 +29,7 @@ describe('ArticleService > getAll()', () => {
   });
   it('should return the list of article instances', async () => {
     const [result] = await ArticleService.getAll();
-    expect(result).toHaveProperty('dataValues');
+    expect(result).toBeInstanceOf(Model);
   });
 });
 
@@ -41,7 +42,7 @@ describe('ArticleService > getById()', () => {
   it('should return a single article instance by id', async () => {
     const { id } = article;
     const result = await ArticleService.getById(id);
-    expect(result).toHaveProperty('dataValues');
+    expect(result).toBeInstanceOf(Model);
   });
 });
 

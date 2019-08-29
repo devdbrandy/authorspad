@@ -7,10 +7,14 @@ import models from '@database/models';
  * @param {string} props.firstName - The user firstname
  * @param {string} props.lastName - The user lastname
  * @param {string} props.email - The user email address
+ * @param {string} props.username - The user unique username
+ * @param {string} props.password - The user password
  * @returns {{
  *    firstName: string,
  *    lastName: string,
  *    email: string,
+ *    username: string,
+ *    password: string,
  * }} A user object
  */
 export const userFactory = (props = {}) => {
@@ -25,15 +29,37 @@ export const userFactory = (props = {}) => {
 };
 
 /**
+* Instantiate user class with default attributes
+* @param {object} [props={}] - The user properties
+* @param {string} props.firstName - The user firstname
+* @param {string} props.lastName - The user lastname
+* @param {string} props.email - The user email address
+* @param {string} props.username - The user unique username
+* @param {string} props.password - The user password
+* @returns {{
+  *    firstName: string,
+  *    lastName: string,
+  *    email: string,
+  *    username: string,
+  *    password: string,
+  * }} A user instance
+  */
+export const build = props => new models.User(userFactory(props));
+
+/**
 * Generates a user object with default attributes
 * @param {object} [props={}] - The user properties
 * @param {string} props.firstName - The user firstname
 * @param {string} props.lastName - The user lastname
 * @param {string} props.email - The user email address
+* @param {string} props.username - The user unique username
+* @param {string} props.password - The user password
 * @returns {{
  *    firstName: string,
  *    lastName: string,
  *    email: string,
+ *    username: string,
+ *    password: string,
  * }} A user object
  */
 export default async (props) => {
