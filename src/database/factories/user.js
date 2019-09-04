@@ -1,21 +1,25 @@
 import faker from 'faker';
 import models from '@database/models';
 
+
+/**
+ * @typedef {import('sequelize').Model} Model
+ */
+
+/**
+ * @typedef {Object} User
+ * @property {string} firstName - The user firstname
+ * @property {string} lastName - The user lastname
+ * @property {string} email - The user email address
+ * @property {string} username - The user unique username
+ * @property {string} password - The user passwor
+ */
+
+
 /**
  * Generates a user object with default attributes
- * @param {object} [props={}] - The user properties
- * @param {string} props.firstName - The user firstname
- * @param {string} props.lastName - The user lastname
- * @param {string} props.email - The user email address
- * @param {string} props.username - The user unique username
- * @param {string} props.password - The user password
- * @returns {{
- *    firstName: string,
- *    lastName: string,
- *    email: string,
- *    username: string,
- *    password: string,
- * }} A user object
+ *
+ * @param {User} [props={}] - The user properties
  */
 export const userFactory = (props = {}) => {
   const defaultProps = {
@@ -29,38 +33,16 @@ export const userFactory = (props = {}) => {
 };
 
 /**
-* Instantiate user class with default attributes
-* @param {object} [props={}] - The user properties
-* @param {string} props.firstName - The user firstname
-* @param {string} props.lastName - The user lastname
-* @param {string} props.email - The user email address
-* @param {string} props.username - The user unique username
-* @param {string} props.password - The user password
-* @returns {{
-  *    firstName: string,
-  *    lastName: string,
-  *    email: string,
-  *    username: string,
-  *    password: string,
-  * }} A user instance
-  */
+ * Instantiate user class with default attributes
+ * @param {User} [props={}] - The user properties
+ * @returns {Model} A User model
+ */
 export const build = props => new models.User(userFactory(props));
 
 /**
-* Generates a user object with default attributes
-* @param {object} [props={}] - The user properties
-* @param {string} props.firstName - The user firstname
-* @param {string} props.lastName - The user lastname
-* @param {string} props.email - The user email address
-* @param {string} props.username - The user unique username
-* @param {string} props.password - The user password
-* @returns {{
- *    firstName: string,
- *    lastName: string,
- *    email: string,
- *    username: string,
- *    password: string,
- * }} A user object
+ * Generates a user model instance with default attributes
+ * @param {User} [props={}] - The user properties
+ * @returns {Model|User}
  */
 export default async (props) => {
   const result = await models.User.create(userFactory(props));

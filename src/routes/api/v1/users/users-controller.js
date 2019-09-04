@@ -91,8 +91,8 @@ class UsersController extends BaseController {
    */
   destroyUser() {
     return this.asyncWrapper(async (req, res) => {
-      const { params: { id: userId } } = req;
-      await this.service.delete(userId);
+      const { locals: { user } } = res;
+      await user.destroy();
       this.sendResponse(res, null, null, 204);
     });
   }

@@ -23,4 +23,6 @@ export const messages = {
   INVALID_AUTH_TOKEN: 'Authentication failure: Invalid or expired token.',
   INVALID_TOKEN_FORMAT: 'Authorization token must be in the format: Bearer <token>.',
   INVALID_CREDENTIALS: 'Your username or password is incorrect.',
+
+  ACCESS_DENIED: 'Access denied!',
 };

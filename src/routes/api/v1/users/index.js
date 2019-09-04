@@ -1,17 +1,23 @@
 import { Router } from 'express';
-import controller from './users-controller';
+import AuthGuard from '@middlewares/authorize';
+import Controller from './users-controller';
+import articlesRouter from '../articles';
 
 const router = Router();
+const isOwner = Controller.isOwnerPolicy('user');
 
 /* List of users */
-router.get('/users', controller.getAllUsers());
+router.get('/users', Controller.getAllUsers());
 /* Get a single user */
-router.get('/users/:id', controller.getUser());
+router.get('/users/:id', Controller.getUser());
 /* Create a user */
-router.post('/users', controller.createUser());
+router.post('/users', Controller.createUser());
 /* Edit a user */
-router.put('/users/:id', controller.updateUser());
+router.put('/users/:id', AuthGuard.can([{ when: isOwner }]), Controller.updateUser());
 /* Delete a user */
-router.delete('/users/:id', controller.destroyUser());
+router.delete('/users/:id', AuthGuard.can([{ when: isOwner }]), Controller.destroyUser());
+
+/* User articles resource */
+router.use('/users/:userId/', articlesRouter);
 
 export default router;
