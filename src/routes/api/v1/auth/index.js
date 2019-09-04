@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import authenticate from '@middlewares/authenticate';
-import controller from './auth-controller';
+import AuthGuard from '@middlewares/authorize';
+import Controller from './auth-controller';
 
 const router = Router();
 
 /* Authenticate user */
-router.post('/auth/login', controller.login());
+router.post('/auth/login', Controller.login());
 /* Get authenticated user profile */
-router.get('/me', authenticate, controller.profile());
+router.get('/me', AuthGuard.can([{ role: 'user' }]), Controller.profile());
 
 export default router;

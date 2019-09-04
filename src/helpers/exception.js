@@ -12,11 +12,12 @@ export default class Exception {
    * @static
    * @param {object|string|number} data - The specific data to validate
    * @param {Array} [message=RESOURCE_NOT_FOUND] - A list of error message & code to display
+   * @param {number} [code=404] - The http status code
    * @memberof ExceptionHandler
    */
-  static throwErrorIfNull(data, message = RESOURCE_NOT_FOUND) {
+  static throwErrorIfNull(data, message = RESOURCE_NOT_FOUND, code = 404) {
     if (!data || data === -1) {
-      throw createError(404, message);
+      throw createError(code, message);
     }
     return true;
   }

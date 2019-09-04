@@ -49,3 +49,11 @@ export const cleanData = (data, recurse) => {
   });
   return data;
 };
+
+/**
+ * Capitalize a given string
+ *
+ * @param {string} str - The string value
+ * @returns {string} The capitalized string
+ */
+export const capitalize = str => str[0].toUpperCase() + str.slice(1);

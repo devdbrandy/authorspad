@@ -23,10 +23,9 @@ class AuthController extends BaseController {
     return this.asyncWrapper(async (req, res) => {
       const { body: { username, password } } = req;
       const user = await this.service.getByEmailOrUsername(username);
-      const valid = user.comparePassword(password);
 
       const { INVALID_CREDENTIALS } = messages;
-      if (!valid) {
+      if (!user || !user.comparePassword(password)) {
         throw createError(401, INVALID_CREDENTIALS);
       }
 
@@ -46,8 +45,8 @@ class AuthController extends BaseController {
    */
   profile() {
     return this.asyncWrapper(async (req, res) => {
-      const { user: { id } } = req;
-      const user = await this.service.getById(id, { plain: true });
+      const { user: authUser } = req;
+      const user = authUser.get({ plain: true });
 
       delete user.password;
       this.sendResponse(res, { user });

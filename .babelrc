@@ -32,8 +32,7 @@
         "@models": "./src/database/models",
         "@services": "./src/services",
         "@src": "./src",
-        "@test": "./test",
-        "@utils": "./src/utils"
+        "@test": "./test"
       }
     }]
   ]

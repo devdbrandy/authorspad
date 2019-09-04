@@ -1,4 +1,4 @@
-import ExceptionHandler from '@helpers/exception';
+import Exception from '@helpers/exception';
 import ArticleService from '@services/article-service';
 import BaseController from '../base-controller';
 
@@ -34,9 +34,9 @@ class ArticleController extends BaseController {
    */
   getArticle() {
     return this.asyncWrapper(async (req, res) => {
-      const { params: { id: userId } } = req;
-      const article = await this.service.getById(userId);
-      ExceptionHandler.throwErrorIfNull(article);
+      const { params: { id: articleId } } = req;
+      const article = await this.service.getById(articleId);
+      Exception.throwErrorIfNull(article);
       this.sendResponse(res, { article });
     });
   }
@@ -51,8 +51,13 @@ class ArticleController extends BaseController {
    */
   createArticle() {
     return this.asyncWrapper(async (req, res) => {
-      const { body } = req;
+      const {
+        body,
+        params: { userId },
+      } = req;
+      body.authorId = userId;
       const article = await this.service.create(body);
+
       this.sendResponse(res, { article }, undefined, 201);
     });
   }
@@ -86,8 +91,8 @@ class ArticleController extends BaseController {
    */
   destroyArticle() {
     return this.asyncWrapper(async (req, res) => {
-      const { params: { id: articleId } } = req;
-      await this.service.delete(articleId);
+      const { locals: { article } } = res;
+      await article.destroy();
       this.sendResponse(res, null, null, 204);
     });
   }
