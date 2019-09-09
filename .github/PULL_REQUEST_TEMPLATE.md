@@ -1,6 +1,6 @@
 #### Description
 
-This closes issueID
+This closes [issue-id]
 
 #### Type of change
 
@@ -22,9 +22,3 @@ Please select the relevant option
 - [ ] Unit
 - [ ] Integration
 - [ ] End-to-end
-
-#### How to Test
-
-Give instructions on how reviewers can verify your work
-
-#### Any background context you want to add
