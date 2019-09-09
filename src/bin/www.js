@@ -51,7 +51,7 @@ const onError = (error) => {
 const onListening = () => {
   const address = server.address();
   const bind = typeof address === 'string' ? `pipe ${address}` : `port ${address.port}`;
-  debug(`We are live on ${bind}`);
+  debug(`🚀 We are live on ${bind}`);
 };
 
 /**
