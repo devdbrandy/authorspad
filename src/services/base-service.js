@@ -29,7 +29,22 @@ export default class BaseService {
     const row = await this.model.findByPk(id);
 
     const { plain } = options;
-    return plain === true ? row.get({ plain }) : row;
+    return (row && plain === true) ? row.get() : row;
+  }
+
+  /**
+   * Search for a specific resource using the WHERE clause
+   *
+   * @param {object} where - Where clause
+   * @param {object} options - Query options
+   * @returns {object} The resource (if found)
+   * @memberof BaseService
+   */
+  async find(where, options = {}) {
+    const row = await this.model.findOne({ where });
+
+    const { plain } = options;
+    return (row && plain === true) ? row.get() : row;
   }
 
   /**

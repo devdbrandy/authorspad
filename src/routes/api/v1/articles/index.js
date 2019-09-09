@@ -3,7 +3,7 @@ import AuthGuard from '@middlewares/authorize';
 import Controller from './articles-controller';
 
 const router = Router({ mergeParams: true });
-const isOwner = Controller.isOwnerPolicy('article');
+const isOwner = Controller.isOwnerPolicy('article', 'authorId');
 
 /* List of articles */
 router.get('/articles', Controller.getAllArticles());

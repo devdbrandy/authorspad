@@ -21,24 +21,36 @@ export default class BaseController {
     this.asyncWrapper = asyncWrapper;
   }
 
-  isOwnerPolicy(name) {
+  /**
+   * Defines the policy type for a specific resource
+   *
+   * @param {string} resourceName - The resource name to use
+   * @param {string} foreignKey - The name of the foreign key in the resource
+   * @memberof BaseController
+   */
+  isOwnerPolicy(resourceName, foreignKey) {
     return async (req, res) => {
-      const { params: { id } } = req;
+      const { params: { id, userId } } = req;
       const { user } = req;
-      const resource = await this.service.getById(id);
+      let where = { id };
 
+      if (foreignKey && (req.originalUrl.includes('/users'))) {
+        where = { id, [foreignKey]: userId };
+      }
+
+      const resource = await this.service.find(where);
       Exception.throwErrorIfNull(resource);
 
       res.locals = {
         ...res.locals,
-        [name]: resource,
+        [resourceName]: resource,
       };
 
-      if (name === 'user') {
-        return user.id === resource.id;
+      if (resourceName === 'user') {
+        return (user.id === resource.id);
       }
 
-      const policy = `has${capitalize(name)}`;
+      const policy = `has${capitalize(resourceName)}`;
       return user[policy](resource);
     };
   }

@@ -15,6 +15,12 @@ const res = {
   status: jest.fn().mockReturnThis(),
   json: jest.fn(),
   header: jest.fn(),
+  locals: {
+    user: {
+      ...userMock,
+      destroy: jest.fn(),
+    },
+  },
 };
 const next = jest.fn();
 
@@ -98,11 +104,9 @@ describe('UsersController', () => {
     expect(res.json).toHaveBeenCalledWith(expected);
   });
   it('destroyUser should respond with 204 no response', async () => {
-    jest.spyOn(controller.service, 'delete').mockResolvedValue(1);
-    const req = { params: { id: 1 } };
     const destroyUser = controller.destroyUser();
 
-    await destroyUser(req, res, next);
+    await destroyUser({}, res, next);
     expect(res.status).toHaveBeenCalledWith(204);
     expect(res.status).toHaveBeenCalledTimes(1);
   });
