@@ -3,11 +3,19 @@ import path from 'path';
 import Sequelize from 'sequelize';
 import dbConfig from '@config/database';
 import { env } from '@helpers/utils';
+import { afterCreate } from '@database/hooks';
 
 const basename = path.basename(__filename);
 const environment = env('NODE_ENV', 'development');
 const config = dbConfig[environment];
 const db = {};
+
+// universal (global) sequelize options
+config.define = {
+  hooks: {
+    afterCreate,
+  },
+};
 
 let sequelize;
 if (config.use_env_variable) {

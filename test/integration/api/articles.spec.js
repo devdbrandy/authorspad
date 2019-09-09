@@ -1,16 +1,17 @@
-import request from 'supertest';
-import app from '@src/app';
+import { server, apiBase, auth } from '@test/support';
 import ArticleFactory, { articleFactory } from '@factories/article';
 import UserFactory from '@factories/user';
 import models from '@database/models';
 
-const server = () => request(app);
-const apiBase = '/api/v1';
 let article;
+let author;
+let authToken;
 
 beforeAll(async () => {
-  const { id: authorId } = await UserFactory();
+  author = await UserFactory();
+  const { id: authorId, username } = author;
   article = await ArticleFactory(authorId);
+  authToken = await auth({ username, password: 'secret' });
 });
 
 afterAll(() => {
@@ -58,6 +59,7 @@ describe('POST /articles', () => {
 
     server()
       .post(`${apiBase}/articles`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send(articleData)
       .expect(201)
       .end((err, res) => {
@@ -83,6 +85,7 @@ describe('PUT /articles/:id', () => {
 
     server()
       .put(`${apiBase}/articles/${id}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send(articleData)
       .expect(200)
       .end((err, res) => {
@@ -104,6 +107,25 @@ describe('DELETE /articles/:id', () => {
 
     server()
       .delete(`${apiBase}/articles/${id}`)
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(204, done);
+  });
+});
+
+describe('DELETE /users/:userId/articles/:id', () => {
+  let mockArticle;
+
+  beforeAll(async () => {
+    mockArticle = await ArticleFactory(author.id);
+  });
+
+  it('should delete a single article resource by userId', (done) => {
+    const { id } = mockArticle;
+    const { id: userId } = author;
+
+    server()
+      .delete(`${apiBase}/users/${userId}/articles/${id}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(204, done);
   });
 });

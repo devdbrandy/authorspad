@@ -50,7 +50,7 @@ export default class AuthGuard {
    * @param {AuthPolicy[]} [policies=[]] - The authorization policy
    * @memberof AuthGuard
    */
-  static can(policies = []) {
+  static can(policies) {
     return [AuthGuard.authenticateGuard, AuthGuard.authorizeGuard(policies)];
   }
 
@@ -63,19 +63,13 @@ export default class AuthGuard {
    */
   static authorizeGuard(policies) {
     return async (req, res, next) => {
-      const { user } = req;
-
       try {
-        if (user && policies.length) {
-          const access = await AuthGuard.checkPolicy(req, res, policies);
-          if (access.indexOf(true) >= 0) {
-            return next();
-          }
-        }
+        const access = await AuthGuard.checkPolicy(req, res, policies);
 
-        return next(createError(403, ACCESS_DENIED));
+        if (access.indexOf(true) >= 0) next();
+        else next(createError(403, ACCESS_DENIED));
       } catch (err) {
-        return next(err);
+        next(err);
       }
     };
   }

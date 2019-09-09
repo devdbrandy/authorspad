@@ -56,8 +56,7 @@ describe('AuthController', () => {
 
   it('<profile> should get user profile', async () => {
     const user = userMock.get();
-    jest.spyOn(controller.service, 'getById').mockResolvedValue(user);
-    const req = { user: { id: 1 } };
+    const req = { user: userMock };
     const expected = {
       success: true,
       data: { user },

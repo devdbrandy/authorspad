@@ -1,15 +1,17 @@
-import request from 'supertest';
-import app from '@src/app';
+import { server, apiBase, auth } from '@test/support';
 import UserFactory, { userFactory } from '@factories/user';
 import models from '@database/models';
 import JWTService from '@services/jwt-service';
 
-const server = () => request(app);
-const apiBase = '/api/v1';
 let user;
+let authToken;
 
 beforeAll(async () => {
   user = await UserFactory();
+  authToken = await auth({
+    username: user.username,
+    password: 'secret',
+  });
 });
 
 afterAll(() => {
@@ -87,6 +89,7 @@ describe('PUT /users/:id', () => {
 
     server()
       .put(`${apiBase}/users/${id}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send(userData)
       .expect(200)
       .end((err, res) => {
@@ -109,6 +112,7 @@ describe('DELETE /users/:id', () => {
 
     server()
       .delete(`${apiBase}/users/${id}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(204, done);
   });
 });

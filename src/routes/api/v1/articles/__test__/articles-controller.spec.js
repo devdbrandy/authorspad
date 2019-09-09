@@ -10,6 +10,12 @@ const articleMock = {
 const res = {
   status: jest.fn().mockReturnThis(),
   json: jest.fn(),
+  locals: {
+    article: {
+      ...articleMock,
+      destroy: jest.fn(),
+    },
+  },
 };
 const next = jest.fn();
 
@@ -56,6 +62,7 @@ describe('ArticlesController', () => {
         title: 'New article',
         body: 'New article body',
       },
+      params: { userId: 'usr01' },
     };
     const createArticle = controller.createArticle();
     const expected = {
@@ -87,11 +94,9 @@ describe('ArticlesController', () => {
     expect(res.json).toHaveBeenCalledWith(expected);
   });
   it('destroyArticle should respond with 204 no response', async () => {
-    jest.spyOn(controller.service, 'delete').mockResolvedValue(1);
-    const req = { params: { id: 1 } };
     const destroyArticle = controller.destroyArticle();
 
-    await destroyArticle(req, res, next);
+    await destroyArticle({}, res, next);
     expect(res.status).toHaveBeenCalledWith(204);
     expect(res.status).toHaveBeenCalledTimes(1);
   });

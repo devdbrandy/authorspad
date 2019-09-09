@@ -10,12 +10,11 @@ class UserService extends BaseService {
    * @param {object} data - The resource data
    * @param {object} options - Query options
    * @returns {object} The newly created resource
-   * @memberof BaseService
+   * @memberof UserService
    */
-  async create(data, options = {}) {
+  async create(data, options) {
     const row = await super.create(data, options);
     delete row.password;
-    delete row.deletedAt;
     return row;
   }
 
@@ -25,7 +24,7 @@ class UserService extends BaseService {
    * @param {number} id - The resource unique identifier
    * @param {object} options - Query options
    * @returns {object} The resource (if found)
-   * @memberof BaseService
+   * @memberof UserService
    */
   async getByEmailOrUsername(field, options = {}) {
     const row = await this.model.findOne({
