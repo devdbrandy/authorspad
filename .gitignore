@@ -19,7 +19,6 @@
 npm-debug.log
 testem.log
 /typings
-package-*.json
 
 # e2e
 /e2e/*.js
