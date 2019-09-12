@@ -10,7 +10,7 @@ import models from '@database/models';
  * @typedef {Object} Article
  * @property {string} title - The article title
  * @property {string} body - The article body
- * @property {string} authorId - The article's author unique identifier
+ * @property {string} userId - The article's author unique identifier
  */
 
 
@@ -18,11 +18,11 @@ import models from '@database/models';
  * Generates an article object with default attributes
  * @param {Article} [props={}] - The article properties
  */
-export const articleFactory = (authorId, props = {}) => {
+export const articleFactory = (userId, props = {}) => {
   const defaultProps = {
     title: faker.company.catchPhrase(),
     body: faker.lorem.paragraphs(),
-    authorId,
+    userId,
   };
   return Object.assign({}, defaultProps, props);
 };
@@ -32,8 +32,8 @@ export const articleFactory = (authorId, props = {}) => {
  * @param {Article} [props={}] - The user properties
  * @returns {Model|Article}
  */
-export default async (authorId, props) => {
-  const result = await models.Article.create(articleFactory(authorId, props));
+export default async (userId, props) => {
+  const result = await models.Article.create(articleFactory(userId, props));
 
   const article = result.get({ plain: true });
   delete article.deletedAt;

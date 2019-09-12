@@ -5,7 +5,7 @@ const articleMock = {
   id: 1,
   title: 'Some Title',
   body: 'Article body',
-  authorId: 1,
+  userId: 1,
 };
 const res = {
   status: jest.fn().mockReturnThis(),
