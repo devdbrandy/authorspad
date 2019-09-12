@@ -30,6 +30,7 @@
         "@helpers": "./src/helpers",
         "@middlewares": "./src/middlewares",
         "@models": "./src/database/models",
+        "@modules": "./src/modules",
         "@services": "./src/services",
         "@src": "./src",
         "@test": "./test"
