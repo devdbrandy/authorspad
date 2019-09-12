@@ -55,10 +55,16 @@ export default (sequelize, DataTypes) => {
 
   User.associate = (models) => {
     User.hasMany(models.Article, {
-      foreignKey: 'authorId',
+      foreignKey: 'userId',
       as: 'articles',
       onDelete: 'cascade',
       hooks: true,
+    });
+
+    User.belongsToMany(models.Role, {
+      through: 'UserRoles',
+      foreignKey: 'userId',
+      as: 'roles',
     });
   };
 

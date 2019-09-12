@@ -2,6 +2,7 @@ import homeRouter from './home';
 import authRouter from './auth';
 import usersRouter from './users';
 import articlesRouter from './articles';
+import rolesRouter from './roles';
 
 /**
  * Routes register
@@ -15,6 +16,7 @@ const routes = (apiPrefix, app) => {
   app.use(apiPrefix, authRouter);
   app.use(apiPrefix, usersRouter);
   app.use(apiPrefix, articlesRouter);
+  app.use(apiPrefix, rolesRouter);
 
   return app;
 };

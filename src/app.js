@@ -21,9 +21,7 @@ app.use(cookieParser());
 routes(app);
 
 // catch 404 and forward to exception handler
-app.use((req, res, next) => {
-  next(createError(404, NOT_FOUND));
-});
+app.use((req, res, next) => next(createError(404, NOT_FOUND)));
 
 // exception handlers
 app.use(Exception.handleDatabaseError());

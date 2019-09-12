@@ -29,8 +29,15 @@ class AuthController extends BaseController {
         throw createError(401, INVALID_CREDENTIALS);
       }
 
+      const userRoles = await user.getRoles({
+        attributes: ['name'],
+        includeIgnoreAttributes: false,
+        raw: true,
+      });
+      const roles = userRoles.map(role => role.name);
       const id = user.get('id');
-      const token = JWTService.sign({ id, username });
+      const token = JWTService.sign({ id, username, roles });
+
       this.sendResponse(res, { token });
     });
   }
@@ -45,8 +52,8 @@ class AuthController extends BaseController {
    */
   profile() {
     return this.asyncWrapper(async (req, res) => {
-      const { user: authUser } = req;
-      const user = authUser.get();
+      const { user: { id } } = req;
+      const user = await this.service.getById(id, { plain: true });
 
       delete user.password;
       this.sendResponse(res, { user });

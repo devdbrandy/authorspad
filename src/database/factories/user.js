@@ -27,7 +27,7 @@ export const userFactory = (props = {}) => {
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
     username: faker.internet.userName(),
-    password: 'secret',
+    password: '$2a$10$QRUIZwSPLLkS4BVJQZ75wu6LROYIqe5eKMsWYV2C21bCnUNS51NAK', // secret
   };
   return Object.assign({}, defaultProps, props);
 };

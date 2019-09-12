@@ -1,8 +1,10 @@
 import createError from 'http-errors';
 import JWTService from '@services/jwt-service';
-import UserService from '@services/user-service';
-import { messages } from '@helpers/constants';
+import RoleService from '@services/role-service';
+import RBAC from '@modules/rbac';
 import Exception from '@helpers/exception';
+import { messages } from '@helpers/constants';
+import userService from '@services/user-service';
 
 const {
   NO_AUTH_TOKEN,
@@ -36,7 +38,11 @@ export default class AuthGuard {
 
       Exception.throwErrorIfNull(decoded, INVALID_AUTH_TOKEN, 403);
 
-      req.user = await UserService.getById(decoded.id);
+      const authUser = await userService.getByEmailOrUsername(decoded.username);
+      Exception.throwErrorIfNull(authUser, INVALID_AUTH_TOKEN, 403);
+
+      res.locals = Object.assign({}, res.locals, { authUser });
+      req.user = decoded;
       next();
     } catch (err) {
       next(err);
@@ -47,51 +53,47 @@ export default class AuthGuard {
    * A middlware that guards against user access control
    *
    * @static
-   * @param {AuthPolicy[]} [policies=[]] - The authorization policy
+   * @param {string} operation - The allowed permission
+   * @param {Function} resourceMiddlware - The resource policy middleware
+   * @return {Function[]} A list of middleware
    * @memberof AuthGuard
    */
-  static can(policies) {
-    return [AuthGuard.authenticateGuard, AuthGuard.authorizeGuard(policies)];
+  static can(operation, resourceMiddlware = (req, res, next) => next()) {
+    return [
+      AuthGuard.authenticateGuard,
+      resourceMiddlware,
+      AuthGuard.authorizeGuard(operation),
+    ];
   }
 
   /**
    * A middleware to determine if a user is authorized to access a resource
    *
-   * @param {AuthPolicy[]} [policies=[]] - The authorization policy
+   * @param {string} operation - The allowed permission
    * @returns {Function} HTTP response or moves to the next middleware
    * @memberof AuthGuard
    */
-  static authorizeGuard(policies) {
+  static authorizeGuard(operation) {
     return async (req, res, next) => {
-      try {
-        const access = await AuthGuard.checkPolicy(req, res, policies);
+      const { user } = req;
+      const [userRole] = user.roles;
 
-        if (access.indexOf(true) >= 0) next();
-        else next(createError(403, ACCESS_DENIED));
-      } catch (err) {
-        next(err);
+      const rolesOption = await RoleService.getAll();
+      const rbac = new RBAC(rolesOption);
+
+      const { locals: { resourceName } } = res;
+      const resource = res.locals[resourceName];
+
+      if (resourceName === 'user') {
+        resource.userId = resource.id;
       }
+
+      if (rbac.can(userRole, operation, { user, resource })) {
+        return next();
+      }
+
+      return next(createError(403, ACCESS_DENIED));
     };
-  }
-
-  /**
-   * Determine the user access privilege
-   *
-   * @param {Request} req - Express Request object
-   * @param {Response} res - Express Response object
-   * @param {AuthPolicy[]} [policies=[]] - The authorization policy
-   * @returns {Function} HTTP response or moves to the next middleware
-   * @memberof AuthGuard
-   */
-  static async checkPolicy(req, res, policies) {
-    const promises = policies.map((policy) => {
-      if (policy.when) {
-        return policy.when(req, res);
-      }
-      return true;
-    });
-    const access = await Promise.all(promises);
-    return access;
   }
 }
 
