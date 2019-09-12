@@ -14,7 +14,7 @@ export const up = (queryInterface, Sequelize) => (
       allowNull: false,
       type: Sequelize.STRING,
     },
-    authorId: {
+    userId: {
       type: Sequelize.STRING,
       references: {
         model: 'Users',

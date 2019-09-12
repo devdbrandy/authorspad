@@ -55,7 +55,7 @@ class ArticleController extends BaseController {
         body,
         params: { userId },
       } = req;
-      body.authorId = userId;
+      body.userId = userId;
       const article = await this.service.create(body);
 
       this.sendResponse(res, { article }, undefined, 201);

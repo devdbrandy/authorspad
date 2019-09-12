@@ -14,7 +14,7 @@ export default (sequelize, DataTypes) => {
     paranoid: true,
     defaultScope: {
       where: {
-        authorId: { [Op.ne]: null },
+        userId: { [Op.ne]: null },
       },
       attributes: {
         exclude: ['deletedAt'],
@@ -24,7 +24,7 @@ export default (sequelize, DataTypes) => {
 
   Article.associate = (models) => {
     Article.belongsTo(models.User, {
-      foreignKey: 'authorId',
+      foreignKey: 'userId',
       as: 'author',
     });
   };
