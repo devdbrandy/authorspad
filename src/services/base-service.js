@@ -11,9 +11,9 @@ export default class BaseService {
    * @memberof BaseService
    */
   async getAll(options = {}) {
-    const rows = await this.model.findAll();
+    const { plain, ...option } = options;
+    const rows = await this.model.findAll(option);
 
-    const { plain } = options;
     return (plain === true) ? rows.map(row => row.get({ plain })) : rows;
   }
 
@@ -26,10 +26,10 @@ export default class BaseService {
    * @memberof BaseService
    */
   async getById(id, options = {}) {
-    const row = await this.model.findByPk(id);
+    const { plain, ...option } = options;
+    const row = await this.model.findByPk(id, option);
 
-    const { plain } = options;
-    return (row && plain === true) ? row.get() : row;
+    return (row && plain === true) ? row.get({ plain }) : row;
   }
 
   /**
@@ -44,7 +44,7 @@ export default class BaseService {
     const row = await this.model.findOne({ where });
 
     const { plain } = options;
-    return (row && plain === true) ? row.get() : row;
+    return (row && plain === true) ? row.get({ plain }) : row;
   }
 
   /**

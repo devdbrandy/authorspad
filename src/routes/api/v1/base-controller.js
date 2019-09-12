@@ -1,12 +1,7 @@
 import ResponseHandler from '@helpers/response';
 import Exception from '@helpers/exception';
-import { capitalize } from '@helpers/utils';
 
 const asyncWrapper = fn => (req, res, next) => fn(req, res, next).catch(next);
-
-/**
-* @typedef {import('@services/base-service').default} BaseService
-*/
 
 export default class BaseController {
   /**
@@ -28,30 +23,44 @@ export default class BaseController {
    * @param {string} foreignKey - The name of the foreign key in the resource
    * @memberof BaseController
    */
-  isOwnerPolicy(resourceName, foreignKey) {
-    return async (req, res) => {
-      const { params: { id, userId } } = req;
-      const { user } = req;
-      let where = { id };
+  resourcePolicy(resourceName) {
+    return async (req, res, next) => {
+      try {
+        Exception.throwErrorIfNull(resourceName, 'Resource name is not defined', 500);
 
-      if (foreignKey && (req.originalUrl.includes('/users'))) {
-        where = { id, [foreignKey]: userId };
+        const { params: { id, userId } } = req;
+        let where = { id };
+
+        if (req.originalUrl.includes('/users')) {
+          where = { id, userId };
+        }
+
+        const resource = await this.service.find(where);
+        Exception.throwErrorIfNull(resource);
+
+        res.locals = Object.assign({}, res.locals, {
+          resourceName,
+          [resourceName]: resource,
+        });
+
+        next();
+      } catch (err) {
+        next(err);
       }
-
-      const resource = await this.service.find(where);
-      Exception.throwErrorIfNull(resource);
-
-      res.locals = {
-        ...res.locals,
-        [resourceName]: resource,
-      };
-
-      if (resourceName === 'user') {
-        return (user.id === resource.id);
-      }
-
-      const policy = `has${capitalize(resourceName)}`;
-      return user[policy](resource);
     };
   }
 }
+
+/*
+|--------------------------------------------------------------------------
+| Types definition
+|--------------------------------------------------------------------------
+|
+| Useful for documenting custom types, allowing us to provide a type
+| expression identifying the type of value that a symbol may contain
+|
+*/
+
+/**
+ * @typedef {import('@services/base-service').default} BaseService
+ */

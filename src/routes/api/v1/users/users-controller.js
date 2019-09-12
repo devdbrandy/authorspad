@@ -1,5 +1,6 @@
 import ExceptionHandler from '@helpers/exception';
 import UserService from '@services/user-service';
+import RoleService from '@services/role-service';
 import JWTService from '@services/jwt-service';
 import BaseController from '../base-controller';
 
@@ -53,9 +54,19 @@ class UsersController extends BaseController {
   createUser() {
     return this.asyncWrapper(async (req, res) => {
       const { body } = req;
-      const user = await this.service.create(body, { plain: true });
-      const { id, username } = user;
-      const token = JWTService.sign({ id, username });
+      const user = await this.service.create(body);
+
+      const role = await RoleService.find({ name: 'writer' });
+      await user.addRole(role);
+      const userRoles = await user.getRoles({
+        attributes: ['name'],
+        includeIgnoreAttributes: false,
+        raw: true,
+      });
+      const roles = userRoles.map(item => item.name);
+
+      const { id, username } = user.get({ plain: true });
+      const token = JWTService.sign({ id, username, roles });
 
       res.header('X-Auth-Token', token);
       this.sendResponse(res, { user }, undefined, 201);

@@ -55,7 +55,7 @@ describe('AuthController', () => {
   });
 
   it('<profile> should get user profile', async () => {
-    const user = userMock.get();
+    const user = userMock.get({ plain: true });
     const req = { user: userMock };
     const expected = {
       success: true,

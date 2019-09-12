@@ -6,7 +6,8 @@ const router = Router();
 
 /* Authenticate user */
 router.post('/auth/login', Controller.login());
+
 /* Get authenticated user profile */
-router.get('/me', AuthGuard.can([{ role: 'user' }]), Controller.profile());
+router.get('/me', AuthGuard.can('read'), Controller.profile());
 
 export default router;
