@@ -9,6 +9,7 @@
     "db:migrate": "sequelize db:migrate",
     "db:refresh": "yarn db:reset && yarn db:migrate",
     "db:reset": "sequelize db:migrate:undo:all",
+    "db:seed": "sequelize db:seed:all ",
     "lint": "eslint src",
     "sequelize": "sequelize",
     "start": "node ./dist/bin/www",
