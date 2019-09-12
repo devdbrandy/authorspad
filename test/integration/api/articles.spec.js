@@ -1,15 +1,31 @@
 import { server, apiBase, auth } from '@test/support';
-import ArticleFactory, { articleFactory } from '@factories/article';
-import UserFactory from '@factories/user';
 import models from '@database/models';
+import ArticleFactory, { articleFactory } from '@factories/article';
+import { build as newUserInstance } from '@factories/user';
+import RoleFactory from '@factories/role';
 
 let article;
 let author;
 let authToken;
 
 beforeAll(async () => {
-  author = await UserFactory();
+  const user = await newUserInstance({ isVerified: true }).save();
+
+  // create and assign role/permission to user
+  const writerRole = await RoleFactory({
+    name: 'writer',
+    ownership: true,
+    permissions: [
+      { scope: 'article:write' },
+      { scope: 'article:edit' },
+      { scope: 'article:delete' },
+    ],
+  });
+  await user.addRole(writerRole);
+
+  author = user.get();
   const { id: authorId, username } = author;
+
   article = await ArticleFactory(authorId);
   authToken = await auth({ username, password: 'secret' });
 });
@@ -127,5 +143,13 @@ describe('DELETE /users/:userId/articles/:id', () => {
       .delete(`${apiBase}/users/${userId}/articles/${id}`)
       .set('Authorization', `Bearer ${authToken}`)
       .expect(204, done);
+  });
+  it('should handle error occurence', (done) => {
+    const { id: userId } = author;
+
+    server()
+      .delete(`${apiBase}/users/${userId}/articles/1000`)
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(404, done);
   });
 });

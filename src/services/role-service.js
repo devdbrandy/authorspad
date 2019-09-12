@@ -67,10 +67,8 @@ class RoleService extends BaseService {
       const { permissions, parentRole } = item;
       let permissionList;
 
-      if (permissions.length > 0) {
-        permissionList = permissions.map(permit => permit.scope);
-        item.permissions = permissionList;
-      }
+      permissionList = permissions.map(permit => permit.scope);
+      item.permissions = permissionList;
 
       if (parentRole) {
         permissionList = parentRole.permissions.map(permit => permit.scope);

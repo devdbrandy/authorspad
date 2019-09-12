@@ -38,7 +38,7 @@ export default class AuthGuard {
 
       Exception.throwErrorIfNull(decoded, INVALID_AUTH_TOKEN, 403);
 
-      const authUser = await userService.getByEmailOrUsername(decoded.username);
+      const authUser = await userService.getById(decoded.id);
       Exception.throwErrorIfNull(authUser, INVALID_AUTH_TOKEN, 403);
 
       res.locals = Object.assign({}, res.locals, { authUser });

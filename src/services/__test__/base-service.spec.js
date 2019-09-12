@@ -55,6 +55,11 @@ describe('BaseService > create()', () => {
   it('should return newly created model', async () => {
     const userData = userFactory();
     const result = await baseService.create(userData);
+    expect(result).toBeInstanceOf(Model);
+  });
+  it('should return newly created instance object', async () => {
+    const userData = userFactory();
+    const result = await baseService.create(userData, { plain: true });
     expect(result.firstName).toEqual(userData.firstName);
     expect(result.lastName).toEqual(userData.lastName);
     expect(result.email).toEqual(userData.email);

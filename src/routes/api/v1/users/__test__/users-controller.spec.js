@@ -1,5 +1,6 @@
 import { userFactory } from '@factories/user';
 import JWTService from '@services/jwt-service';
+import RoleService from '@services/role-service';
 import controller from '../users-controller';
 
 const userMock = {
@@ -9,6 +10,9 @@ const userMock = {
   email: 'johndoe@gmail.com',
   username: 'user124',
   password: 'secret',
+  get: jest.fn().mockReturnThis(),
+  addRole: jest.fn(),
+  getRoles: jest.fn().mockResolvedValue([{ name: 'writer' }]),
 };
 
 const res = {
@@ -62,6 +66,7 @@ describe('UsersController', () => {
   });
   it('createUser should return newly created user', async () => {
     jest.spyOn(JWTService, 'sign').mockReturnValue('token');
+    jest.spyOn(RoleService, 'find').mockReturnValue({});
     jest.spyOn(controller.service, 'create').mockResolvedValue(userMock);
 
     const req = {

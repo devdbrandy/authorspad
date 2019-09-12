@@ -13,6 +13,7 @@ import models from '@database/models';
  * @property {string} email - The user email address
  * @property {string} username - The user unique username
  * @property {string} password - The user passwor
+ * @property {boolean} isVerified - Determine if user is verified
  */
 
 
@@ -27,7 +28,7 @@ export const userFactory = (props = {}) => {
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
     username: faker.internet.userName(),
-    password: '$2a$10$QRUIZwSPLLkS4BVJQZ75wu6LROYIqe5eKMsWYV2C21bCnUNS51NAK', // secret
+    password: 'secret',
   };
   return Object.assign({}, defaultProps, props);
 };
@@ -47,7 +48,7 @@ export const build = props => new models.User(userFactory(props));
 export default async (props) => {
   const result = await models.User.create(userFactory(props));
 
-  const user = result.get({ plain: true });
+  const user = result.get();
   delete user.deletedAt;
   return user;
 };
