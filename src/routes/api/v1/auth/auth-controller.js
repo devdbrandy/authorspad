@@ -52,8 +52,8 @@ class AuthController extends BaseController {
    */
   profile() {
     return this.asyncWrapper(async (req, res) => {
-      const { user: { id } } = req;
-      const user = await this.service.getById(id, { plain: true });
+      const { locals: { authUser } } = res;
+      const user = authUser.get();
 
       delete user.password;
       this.sendResponse(res, { user });

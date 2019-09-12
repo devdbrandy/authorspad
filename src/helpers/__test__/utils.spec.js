@@ -2,6 +2,7 @@ import {
   env,
   normalizePort,
   cleanData,
+  capitalize,
 } from '../utils';
 
 describe('Utils > env()', () => {
@@ -59,5 +60,11 @@ describe('Utils > cleanData()', () => {
       profile: { name: 'John Doe' },
     };
     expect(cleanData(mockData, true)).toEqual(expected);
+  });
+});
+
+describe('Utils > cleanData()', () => {
+  it('should return a capitalize string', () => {
+    expect(capitalize('dbrandy')).toEqual('Dbrandy');
   });
 });

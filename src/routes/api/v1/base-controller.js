@@ -31,7 +31,7 @@ export default class BaseController {
         const { params: { id, userId } } = req;
         let where = { id };
 
-        if (req.originalUrl.includes('/users')) {
+        if (req.originalUrl.includes('/users') && resourceName !== 'user') {
           where = { id, userId };
         }
 

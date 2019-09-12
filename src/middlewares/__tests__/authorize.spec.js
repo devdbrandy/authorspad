@@ -2,6 +2,7 @@ import { Unauthorized, BadRequest } from 'http-errors';
 import AuthGuard from '@middlewares/authorize';
 import JWTService from '@services/jwt-service';
 import UserService from '@services/user-service';
+import RoleService from '@services/role-service';
 import { messages } from '@helpers/constants';
 
 const {
@@ -73,23 +74,30 @@ describe('Authenticate Guard', () => {
 
 describe('Authorize Guard', () => {
   const req = {
-    user: { id: 'usr123' },
+    user: { id: 'usr123', roles: ['writer'] },
   };
 
-  it('should throw an Exception for invalid access right', async () => {
-    const policies = [{ when: () => false }];
-    const error = new Unauthorized(ACCESS_DENIED);
-    const authenticateGuard = AuthGuard.authorizeGuard(policies);
+  const mockRoles = [
+    {
+      id: 3,
+      name: 'writer',
+      parentRole: null,
+      permissions: ['write'],
+    },
+  ];
 
-    await authenticateGuard(req, res, next);
-    expect(next).toHaveBeenCalledWith(error);
-    expect(next).toHaveBeenCalledTimes(1);
+  beforeEach(() => {
+    jest.spyOn(RoleService, 'getAll').mockResolvedValue(mockRoles);
   });
-  it('should handle error occurence', async () => {
-    const error = new Error('some error');
-    jest.spyOn(AuthGuard, 'checkPolicy').mockRejectedValue(error);
 
-    const authenticateGuard = AuthGuard.authorizeGuard([{}]);
+  it('should throw an Exception for invalid access right', async () => {
+    const error = new Unauthorized(ACCESS_DENIED);
+    const authenticateGuard = AuthGuard.authorizeGuard('edit');
+
+    res.locals = {
+      resourceName: 'article',
+      article: { userId: 'user23' },
+    };
 
     await authenticateGuard(req, res, next);
     expect(next).toHaveBeenCalledWith(error);

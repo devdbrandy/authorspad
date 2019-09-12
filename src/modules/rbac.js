@@ -23,9 +23,7 @@ export default class RBAC {
         inherits: [],
       };
 
-      if (role.permissions.length > 0) {
-        this.serializePermission(roleName, role);
-      }
+      this.serializePermission(roleName, role);
 
       if (parentRole) {
         this.roles[roleName].inherits.push(parentRole.name);

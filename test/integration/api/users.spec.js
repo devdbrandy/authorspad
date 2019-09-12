@@ -1,15 +1,29 @@
 import { server, apiBase, auth } from '@test/support';
-import UserFactory, { userFactory } from '@factories/user';
 import models from '@database/models';
+import { userFactory, build as newUserInstance } from '@factories/user';
+import RoleFactory from '@factories/role';
 import JWTService from '@services/jwt-service';
 
-let user;
+let mockUser;
 let authToken;
 
 beforeAll(async () => {
-  user = await UserFactory();
+  const user = await newUserInstance({ isVerified: true }).save();
+
+  // create and assign role/permission to user
+  const writerRole = await RoleFactory({
+    name: 'writer',
+    ownership: true,
+    permissions: [
+      { scope: 'user:edit' },
+      { scope: 'user:delete' },
+    ],
+  });
+  await user.addRole(writerRole);
+
+  mockUser = user.get();
   authToken = await auth({
-    username: user.username,
+    username: mockUser.username,
     password: 'secret',
   });
 });
@@ -35,7 +49,7 @@ describe('GET /users', () => {
 
 describe('GET /users/:id', () => {
   it('should fetch a single user resource', (done) => {
-    const { id } = user;
+    const { id } = mockUser;
 
     server()
       .get(`${apiBase}/users/${id}`)
@@ -46,9 +60,9 @@ describe('GET /users/:id', () => {
         expect(err).toBeNull();
         expect(res.body).toHaveProperty('success', true);
         expect(data).toHaveProperty('user');
-        expect(data.user).toHaveProperty('firstName', user.firstName);
-        expect(data.user).toHaveProperty('lastName', user.lastName);
-        expect(data.user).toHaveProperty('email', user.email);
+        expect(data.user).toHaveProperty('firstName', mockUser.firstName);
+        expect(data.user).toHaveProperty('lastName', mockUser.lastName);
+        expect(data.user).toHaveProperty('email', mockUser.email);
         done();
       });
   });
@@ -80,7 +94,7 @@ describe('POST /users', () => {
 
 describe('PUT /users/:id', () => {
   it('should update a specific user resource', (done) => {
-    const { id } = user;
+    const { id } = mockUser;
     const userData = {
       firstName: 'John',
       lastName: 'Doe',
@@ -108,7 +122,7 @@ describe('PUT /users/:id', () => {
 
 describe('DELETE /users/:id', () => {
   it('should delete a single user resource', (done) => {
-    const { id } = user;
+    const { id } = mockUser;
 
     server()
       .delete(`${apiBase}/users/${id}`)

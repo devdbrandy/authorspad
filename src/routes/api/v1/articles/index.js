@@ -15,7 +15,7 @@ router.get('/articles/:id', Controller.getArticle());
 /* Create an article */
 router.post(
   '/articles',
-  AuthGuard.can('article:write', resource),
+  AuthGuard.can('article:write'),
   Controller.createArticle(),
 );
 

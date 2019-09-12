@@ -4,7 +4,7 @@ import Controller from './users-controller';
 import articlesRouter from '../articles';
 
 const router = Router();
-// const isOwner = Controller.isOwnerPolicy('user');
+const resource = Controller.resourcePolicy('user');
 
 /* List of users */
 router.get('/users', Controller.getAllUsers());
@@ -16,10 +16,10 @@ router.get('/users/:id', Controller.getUser());
 router.post('/users', Controller.createUser());
 
 /* Edit a user */
-router.put('/users/:id', AuthGuard.can('user:edit'), Controller.updateUser());
+router.put('/users/:id', AuthGuard.can('user:edit', resource), Controller.updateUser());
 
 /* Delete a user */
-router.delete('/users/:id', AuthGuard.can('user:delete'), Controller.destroyUser());
+router.delete('/users/:id', AuthGuard.can('user:delete', resource), Controller.destroyUser());
 
 /* User articles resource */
 router.use('/users/:userId/', articlesRouter);

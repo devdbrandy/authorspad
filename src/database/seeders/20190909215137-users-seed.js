@@ -6,6 +6,7 @@ export const up = async (queryInterface) => {
     id: shortUUID.generate(),
     username: 'admin',
     email: 'admin@example.com',
+    password: '$2a$10$QRUIZwSPLLkS4BVJQZ75wu6LROYIqe5eKMsWYV2C21bCnUNS51NAK', // secret
     firstName: 'super',
     lastName: 'admin',
     isVerified: true,

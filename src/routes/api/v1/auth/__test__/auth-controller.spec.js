@@ -1,5 +1,6 @@
 import { Unauthorized } from 'http-errors';
 import JWTService from '@services/jwt-service';
+import models from '@database/models';
 import { build as newUserInstance } from '@factories/user';
 import { messages } from '@helpers/constants';
 import controller from '../auth-controller';
@@ -15,6 +16,11 @@ const next = jest.fn();
 
 beforeEach(() => {
   jest.spyOn(controller.service, 'getByEmailOrUsername').mockResolvedValue(userMock);
+  jest.spyOn(controller.service, 'getById').mockResolvedValue(userMock.get({ plain: true }));
+});
+
+afterAll(() => {
+  models.sequelize.close();
 });
 
 describe('AuthController', () => {
@@ -56,14 +62,14 @@ describe('AuthController', () => {
 
   it('<profile> should get user profile', async () => {
     const user = userMock.get({ plain: true });
-    const req = { user: userMock };
+    res.locals = { authUser: userMock };
     const expected = {
       success: true,
       data: { user },
     };
     const profile = controller.profile();
 
-    await profile(req, res, next);
+    await profile({}, res, next);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(expected);
     expect(res.json).toHaveBeenCalledTimes(1);

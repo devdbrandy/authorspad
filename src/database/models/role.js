@@ -10,9 +10,6 @@ export default (sequelize, DataTypes) => {
     description: {
       type: DataTypes.STRING,
     },
-    parent: {
-      type: DataTypes.INTEGER,
-    },
     ownership: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
