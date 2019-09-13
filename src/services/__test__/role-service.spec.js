@@ -47,7 +47,6 @@ describe('RoleService > serializeData', () => {
     }];
 
     const result = RoleService.constructor.serializeData(mockData);
-    // expect(result[0]).toHaveProperty('permissions', ['write']);
     expect(result[0].parentRole).toHaveProperty('permissions', ['read']);
   });
 });

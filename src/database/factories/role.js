@@ -54,7 +54,7 @@ export default async (props) => {
 
   // create & assign permission scopes
   const scopes = await models.Permission.bulkCreate(permissions, { returning: true });
-  await role.addPermission(scopes);
+  await role.addPermissions(scopes);
 
   return role;
 };

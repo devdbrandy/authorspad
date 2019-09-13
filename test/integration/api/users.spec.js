@@ -1,6 +1,6 @@
 import { server, apiBase, auth } from '@test/support';
 import models from '@database/models';
-import { userFactory, build as newUserInstance } from '@factories/user';
+import UserFactory, { userFactory } from '@factories/user';
 import RoleFactory from '@factories/role';
 import JWTService from '@services/jwt-service';
 
@@ -8,11 +8,11 @@ let mockUser;
 let authToken;
 
 beforeAll(async () => {
-  const user = await newUserInstance({ isVerified: true }).save();
+  const user = await UserFactory({ isVerified: true }, false);
 
   // create and assign role/permission to user
   const writerRole = await RoleFactory({
-    name: 'writer',
+    name: 'user',
     ownership: true,
     permissions: [
       { scope: 'user:edit' },

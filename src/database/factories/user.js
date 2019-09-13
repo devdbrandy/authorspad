@@ -45,10 +45,13 @@ export const build = props => new models.User(userFactory(props));
  * @param {User} [props={}] - The user properties
  * @returns {Model|User}
  */
-export default async (props) => {
-  const result = await models.User.create(userFactory(props));
+export default async (props, plain = true) => {
+  let user = await models.User.create(userFactory(props));
 
-  const user = result.get();
-  delete user.deletedAt;
+  if (plain) {
+    user = user.get();
+    delete user.deletedAt;
+  }
+
   return user;
 };
