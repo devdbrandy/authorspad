@@ -3,6 +3,10 @@ export default (sequelize, DataTypes) => {
     scope: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        name: 'permissions_scope',
+        msg: 'Permission scope already exists.',
+      },
     },
   }, {
     timestamps: false,

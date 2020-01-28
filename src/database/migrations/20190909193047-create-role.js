@@ -9,6 +9,7 @@ export const up = (queryInterface, Sequelize) => (
     name: {
       type: Sequelize.STRING,
       allowNull: false,
+      unique: true,
     },
     title: {
       type: Sequelize.STRING,

@@ -9,6 +9,7 @@ export const up = (queryInterface, Sequelize) => (
     scope: {
       allowNull: false,
       type: Sequelize.STRING,
+      unique: true,
     },
     createdAt: {
       allowNull: false,

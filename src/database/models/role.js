@@ -3,6 +3,10 @@ export default (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        name: 'roles_name',
+        msg: 'Role already exists.',
+      },
     },
     title: {
       type: DataTypes.STRING,
