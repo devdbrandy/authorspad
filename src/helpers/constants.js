@@ -17,7 +17,7 @@ export const messages = {
   RESOURCE_FOUND: 'Resource(s) found',
   RESOURCE_NOT_FOUND: 'No resource(s) found',
 
-  WELCOME_MESSAGE: 'Welcome to AuthorsPad',
+  WELCOME_MESSAGE: 'Welcome to AuthorsPad API',
 
   NO_AUTH_TOKEN: 'Access denied. No token provided.',
   INVALID_AUTH_TOKEN: 'Authentication failure: Invalid or expired token.',

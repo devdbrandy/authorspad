@@ -78,6 +78,7 @@ export default class AuthGuard {
       const { user } = req;
       const [userRole] = user.roles;
 
+      // TODO: load and cache roles at the start of application
       const rolesOption = await RoleService.getAll();
       const rbac = new RBAC(rolesOption);
 

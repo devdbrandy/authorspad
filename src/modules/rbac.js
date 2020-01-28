@@ -9,6 +9,12 @@ export default class RBAC {
     this.init(option);
   }
 
+  /**
+   * Standardize roles
+   *
+   * @param {Role[]} roles - List of roles with permissions
+   * @memberof RBAC
+   */
   init(roles) {
     this.roles = {};
 
@@ -100,3 +106,22 @@ export default class RBAC {
     return user.id === resource.userId;
   }
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| Types definition
+|--------------------------------------------------------------------------
+|
+| Useful for documenting custom types, allowing us to provide a type
+| expression identifying the type of value that a symbol may contain
+|
+*/
+
+/**
+ * @typedef {object} Role
+ * @property {string} name - The role name
+ * @property {boolean} ownership - Determines if ownership is checked
+ * @property {Array} permissions - A list of permission scopes
+ * @property {object} parentRole - The parent role
+ */
