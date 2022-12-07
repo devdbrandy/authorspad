@@ -63,7 +63,7 @@
     "husky": "^2.4.1",
     "jest": "^24.8.0",
     "jest-watch-master": "^1.0.0",
-    "lint-staged": "^8.2.1",
+    "lint-staged": "^13.1.0",
     "nodemon": "^1.19.1",
     "rimraf": "^2.6.3",
     "sequelize-cli": "^5.5.0",
